@@ -20,6 +20,20 @@ func TestNewDirect(t *testing.T) {
 	}
 }
 
+func TestDirectIgnoresEnvProxy(t *testing.T) {
+	t.Setenv("HTTP_PROXY", "http://127.0.0.1:1")
+	t.Setenv("HTTPS_PROXY", "http://127.0.0.1:1")
+	t.Setenv("ALL_PROXY", "http://127.0.0.1:1")
+
+	res, err := transport.New(transport.Options{Timeout: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if transport.ClientProxyForTest(res.Client) != nil {
+		t.Fatal("direct mode must not use environment proxy")
+	}
+}
+
 func TestProxyWinsOverTor(t *testing.T) {
 	res, err := transport.New(transport.Options{
 		Timeout:  time.Second,

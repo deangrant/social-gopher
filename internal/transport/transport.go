@@ -32,6 +32,8 @@ type Result struct {
 
 // New builds an HTTP client from opts.
 // If both UseTor and ProxyURL are set, ProxyURL wins and Notice explains that.
+// Environment HTTP(S)_PROXY variables are ignored; use ProxyURL or UseTor for
+// proxied egress.
 func New(opts Options) (Result, error) {
 	if opts.Timeout <= 0 {
 		opts.Timeout = 20 * time.Second
@@ -47,7 +49,6 @@ func New(opts Options) (Result, error) {
 		dialTimeout = 10 * time.Second
 	}
 	transport := &http.Transport{
-		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
 			Timeout:   dialTimeout,
 			KeepAlive: 30 * time.Second,
