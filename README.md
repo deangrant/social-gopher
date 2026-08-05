@@ -69,7 +69,7 @@ If both `-tor` and `-proxy` are set, `-proxy` wins and a notice is printed.
 ## Tor
 
 1. Install Tor so the `tor` binary is on your `PATH` (e.g. `apt install tor`, Homebrew).
-2. Run with `-tor`. If something is already listening on `127.0.0.1:9050`, that listener is reused; otherwise Social Gopher starts a temporary Tor process and stops it when the scan finishes.
+2. Run with `-tor`. If a SOCKS5 proxy is already responding on `127.0.0.1:9050`, that listener is reused; otherwise Social Gopher starts a temporary Tor process and stops it when the scan finishes. A non-SOCKS process on that port is an error.
 3. Or point at any proxy with `-proxy socks5h://127.0.0.1:9050` (skips process management).
 
 First bootstrap of a freshly started Tor can take ~30–60s. `socks5h` sends DNS through the proxy. Tor exits are often rate-limited or blocked by WAFs, so coverage may drop compared to a direct scan.

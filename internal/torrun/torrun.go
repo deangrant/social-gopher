@@ -76,7 +76,8 @@ func (i *Instance) Close() error {
 }
 
 // Ensure makes a local Tor SOCKS endpoint available.
-// If SocksAddr already accepts connections, it returns a no-op Instance.
+// If SocksAddr already speaks SOCKS5, it returns a no-op Instance.
+// If something else is listening there, it returns an error.
 // Otherwise it starts tor and waits until SOCKS is ready or ctx is done.
 func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 	if opts.SocksAddr == "" {
@@ -86,8 +87,14 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 		opts.StartupTimeout = defaultStartupTimeout
 	}
 
-	if socksReady(ctx, opts.SocksAddr) {
+	switch probeSocks5(ctx, opts.SocksAddr) {
+	case socksProbeOK:
 		return &Instance{addr: opts.SocksAddr}, nil
+	case socksProbeNotSocks:
+		return nil, fmt.Errorf(
+			"%s is listening but is not a SOCKS5 proxy",
+			opts.SocksAddr,
+		)
 	}
 
 	binary := opts.Binary
@@ -150,7 +157,8 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 			}
 			return nil, fmt.Errorf("tor exited before SOCKS was ready: %w", err)
 		case <-ticker.C:
-			if socksReady(ctx, opts.SocksAddr) {
+			switch probeSocks5(ctx, opts.SocksAddr) {
+			case socksProbeOK:
 				return &Instance{
 					addr:        opts.SocksAddr,
 					cmd:         cmd,
@@ -158,6 +166,14 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 					startedByUs: true,
 					waitCh:      waitCh,
 				}, nil
+			case socksProbeNotSocks:
+				_ = killCmd(cmd)
+				<-waitCh
+				_ = os.RemoveAll(dataDir)
+				return nil, fmt.Errorf(
+					"%s is listening but is not a SOCKS5 proxy",
+					opts.SocksAddr,
+				)
 			}
 			if time.Now().After(deadline) {
 				_ = killCmd(cmd)
@@ -172,14 +188,35 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 	}
 }
 
-func socksReady(ctx context.Context, addr string) bool {
+type socksProbeResult int
+
+const (
+	socksProbeClosed socksProbeResult = iota
+	socksProbeOK
+	socksProbeNotSocks
+)
+
+// probeSocks5 dials addr and checks a SOCKS5 no-auth greeting reply.
+func probeSocks5(ctx context.Context, addr string) socksProbeResult {
 	d := net.Dialer{Timeout: 200 * time.Millisecond}
 	c, err := d.DialContext(ctx, "tcp", addr)
 	if err != nil {
-		return false
+		return socksProbeClosed
 	}
-	_ = c.Close()
-	return true
+	defer c.Close()
+
+	_ = c.SetDeadline(time.Now().Add(200 * time.Millisecond))
+	if _, err := c.Write([]byte{0x05, 0x01, 0x00}); err != nil {
+		return socksProbeNotSocks
+	}
+	var reply [2]byte
+	if _, err := io.ReadFull(c, reply[:]); err != nil {
+		return socksProbeNotSocks
+	}
+	if reply[0] != 0x05 || reply[1] != 0x00 {
+		return socksProbeNotSocks
+	}
+	return socksProbeOK
 }
 
 func killCmd(cmd *exec.Cmd) error {
