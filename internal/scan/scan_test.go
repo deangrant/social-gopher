@@ -158,6 +158,109 @@ func TestClassifyRedirect(t *testing.T) {
 	}
 }
 
+func TestStatusDoesNotFollowRedirect(t *testing.T) {
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasSuffix(r.URL.Path, "/missing") {
+				http.Redirect(w, r, "/login", http.StatusFound)
+				return
+			}
+			if r.URL.Path == "/login" {
+				w.WriteHeader(http.StatusOK)
+				_, _ = w.Write([]byte("please sign in"))
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("profile"))
+		}),
+	)
+	t.Cleanup(srv.Close)
+
+	site := catalog.Site{
+		Name:       "StatusRedir",
+		HomeURL:    srv.URL,
+		ProfileURL: srv.URL + "/{username}",
+		Method:     http.MethodGet,
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
+	}
+	sc, err := scan.New(scan.Options{Client: srv.Client(), Workers: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var got scan.Result
+	for r := range sc.Run(
+		context.Background(),
+		"missing",
+		[]catalog.Site{site},
+	) {
+		got = r
+	}
+	if got.Exists == scan.Found {
+		t.Fatal("exists = found; must not follow redirect to final 200")
+	}
+	if got.Exists != scan.Unknown {
+		t.Fatalf("exists = %v, want unknown", got.Exists)
+	}
+	if got.HTTPStatus != http.StatusFound {
+		t.Fatalf("status = %d, want 302", got.HTTPStatus)
+	}
+}
+
+func TestBodyDoesNotFollowRedirect(t *testing.T) {
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasSuffix(r.URL.Path, "/missing") {
+				http.Redirect(w, r, "/login", http.StatusFound)
+				return
+			}
+			if r.URL.Path == "/login" {
+				w.WriteHeader(http.StatusOK)
+				_, _ = w.Write([]byte("please sign in"))
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("welcome back"))
+		}),
+	)
+	t.Cleanup(srv.Close)
+
+	site := catalog.Site{
+		Name:       "BodyRedir",
+		HomeURL:    srv.URL,
+		ProfileURL: srv.URL + "/{username}",
+		Check: catalog.Check{
+			Type:         catalog.CheckBody,
+			NotFoundText: []string{"does not exist"},
+		},
+	}
+	sc, err := scan.New(scan.Options{Client: srv.Client(), Workers: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var got scan.Result
+	for r := range sc.Run(
+		context.Background(),
+		"missing",
+		[]catalog.Site{site},
+	) {
+		got = r
+	}
+	if got.Exists == scan.Found {
+		t.Fatal("exists = found; must not follow redirect to final 200")
+	}
+	if got.Exists != scan.Unknown {
+		t.Fatalf("exists = %v, want unknown", got.Exists)
+	}
+	if got.HTTPStatus != http.StatusFound {
+		t.Fatalf("status = %d, want 302", got.HTTPStatus)
+	}
+}
+
 func TestUsernamePatternInvalid(t *testing.T) {
 	site := catalog.Site{
 		Name:            "Pat",

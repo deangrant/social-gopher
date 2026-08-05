@@ -180,10 +180,7 @@ func (s *Scanner) Check(
 		req.Header.Set(k, v)
 	}
 
-	client := s.client
-	if site.Check.Type == catalog.CheckRedirect {
-		client = noRedirectClient(s.client)
-	}
+	client := noRedirectClient(s.client)
 
 	start := time.Now()
 	resp, err := client.Do(req)
@@ -204,7 +201,7 @@ func (s *Scanner) Check(
 					req.Header.Set(k, v)
 				}
 				start = time.Now()
-				resp, err = s.client.Do(req)
+				resp, err = client.Do(req)
 				res.ResponseTime = time.Since(start)
 			}
 		}
