@@ -192,6 +192,30 @@ func TestLoadRejectsInvalid(t *testing.T) {
 			}`,
 		},
 		{
+			name: "javascript scheme",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"javascript:alert(1)",
+					"profile_url":"https://x.test/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "file scheme",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"file:///etc/passwd",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
 			name: "loopback host",
 			src: `{
 				"sites":[{

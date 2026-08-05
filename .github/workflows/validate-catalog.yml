@@ -1,0 +1,26 @@
+name: validate-catalog
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: validate-catalog full
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Build
+        run: go build -o social-gopher ./cmd/social-gopher
+
+      - name: Validate seed catalog
+        run: ./social-gopher -validate-catalog -profile full -timeout 30s -workers 10

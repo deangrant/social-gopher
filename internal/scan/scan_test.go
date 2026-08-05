@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -739,5 +740,372 @@ func TestBodyCheckStillReadsBody(t *testing.T) {
 	}
 	if readBytes == 0 {
 		t.Fatal("body bytes read = 0, want > 0 for body check")
+	}
+}
+
+func TestClassifyMatrix(t *testing.T) {
+	// Scanner only accepts *http.Client (no separate Doer); redirect
+	// first-response is covered via httptest + noRedirectClient clone.
+	tests := []struct {
+		name       string
+		check      catalog.Check
+		method     string
+		status     int
+		body       string
+		bodyErr    error
+		redirectTo string
+		want       scan.Existence
+		wantStatus int
+	}{
+		{
+			name: "status_200",
+			check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusOK,
+			body:       "ok",
+			want:       scan.Found,
+			wantStatus: 200,
+		},
+		{
+			name: "status_404",
+			check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusNotFound,
+			want:       scan.NotFound,
+			wantStatus: 404,
+		},
+		{
+			name: "status_403",
+			check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusForbidden,
+			want:       scan.Unknown,
+			wantStatus: 403,
+		},
+		{
+			name: "status_429",
+			check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusTooManyRequests,
+			want:       scan.Unknown,
+			wantStatus: 429,
+		},
+		{
+			name: "status_302_first_response",
+			check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
+			method:     http.MethodGet,
+			redirectTo: "/login-ok",
+			want:       scan.Unknown,
+			wantStatus: http.StatusFound,
+		},
+		{
+			name: "status_soft404_match",
+			check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+				NotFoundText:   []string{"not found"},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusOK,
+			body:       "user not found here",
+			want:       scan.NotFound,
+			wantStatus: 200,
+		},
+		{
+			name: "status_soft404_no_match",
+			check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+				NotFoundText:   []string{"not found"},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusOK,
+			body:       "welcome profile",
+			want:       scan.Found,
+			wantStatus: 200,
+		},
+		{
+			name: "body_200_found",
+			check: catalog.Check{
+				Type:         catalog.CheckBody,
+				NotFoundText: []string{"missing"},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusOK,
+			body:       "hello",
+			want:       scan.Found,
+			wantStatus: 200,
+		},
+		{
+			name: "body_404_unknown",
+			check: catalog.Check{
+				Type:         catalog.CheckBody,
+				NotFoundText: []string{"missing"},
+			},
+			method:     http.MethodGet,
+			status:     http.StatusNotFound,
+			body:       "nope",
+			want:       scan.Unknown,
+			wantStatus: 404,
+		},
+		{
+			name: "body_302_first_response",
+			check: catalog.Check{
+				Type:         catalog.CheckBody,
+				NotFoundText: []string{"missing"},
+			},
+			method:     http.MethodGet,
+			redirectTo: "/login-ok",
+			want:       scan.Unknown,
+			wantStatus: http.StatusFound,
+		},
+		{
+			name: "body_read_error",
+			check: catalog.Check{
+				Type:         catalog.CheckBody,
+				NotFoundText: []string{"missing"},
+			},
+			method:  http.MethodGet,
+			status:  http.StatusOK,
+			bodyErr: errors.New("truncated"),
+			want:    scan.ErrorState,
+		},
+		{
+			name:       "redirect_200_found",
+			check:      catalog.Check{Type: catalog.CheckRedirect},
+			method:     http.MethodGet,
+			status:     http.StatusOK,
+			want:       scan.Found,
+			wantStatus: 200,
+		},
+		{
+			name:       "redirect_302_not_found",
+			check:      catalog.Check{Type: catalog.CheckRedirect},
+			method:     http.MethodGet,
+			redirectTo: "/elsewhere",
+			want:       scan.NotFound,
+			wantStatus: http.StatusFound,
+		},
+		{
+			name:       "redirect_404_not_found",
+			check:      catalog.Check{Type: catalog.CheckRedirect},
+			method:     http.MethodGet,
+			status:     http.StatusNotFound,
+			want:       scan.NotFound,
+			wantStatus: 404,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			followed := false
+			var tr http.RoundTripper
+			if tt.redirectTo != "" {
+				srv := httptest.NewServer(
+					http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+						if r.URL.Path == tt.redirectTo {
+							followed = true
+							w.WriteHeader(http.StatusOK)
+							return
+						}
+						http.Redirect(w, r, tt.redirectTo, http.StatusFound)
+					}),
+				)
+				t.Cleanup(srv.Close)
+				tr = srv.Client().Transport
+				site := catalog.Site{
+					Name:       tt.name,
+					HomeURL:    srv.URL,
+					ProfileURL: srv.URL + "/{username}",
+					Method:     tt.method,
+					Check:      tt.check,
+				}
+				sc, err := scan.New(scan.Options{
+					Client:  &http.Client{Transport: tr},
+					Workers: 1,
+				})
+				if err != nil {
+					t.Fatal(err)
+				}
+				got := sc.Check(context.Background(), "alice", site)
+				if got.Exists != tt.want {
+					t.Fatalf("exists = %v, want %v", got.Exists, tt.want)
+				}
+				if got.HTTPStatus != tt.wantStatus {
+					t.Fatalf(
+						"status = %d, want %d",
+						got.HTTPStatus,
+						tt.wantStatus,
+					)
+				}
+				if followed {
+					t.Fatal("followed redirect; want first response only")
+				}
+				return
+			}
+
+			tr = &seqTransport{
+				fn: func(req *http.Request, _ int) (*http.Response, error) {
+					var body io.ReadCloser = io.NopCloser(
+						strings.NewReader(tt.body),
+					)
+					if tt.bodyErr != nil {
+						body = io.NopCloser(&errReadCloser{err: tt.bodyErr})
+					}
+					return &http.Response{
+						StatusCode: tt.status,
+						Body:       body,
+						Header:     make(http.Header),
+						Request:    req,
+					}, nil
+				},
+			}
+			site := catalog.Site{
+				Name:       tt.name,
+				HomeURL:    "https://example.com",
+				ProfileURL: "https://example.com/{username}",
+				Method:     tt.method,
+				Check:      tt.check,
+			}
+			sc, err := scan.New(scan.Options{
+				Client:  &http.Client{Transport: tr},
+				Workers: 1,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			got := sc.Check(context.Background(), "alice", site)
+			if got.Exists != tt.want {
+				t.Fatalf(
+					"exists = %v, want %v (err=%v)",
+					got.Exists,
+					tt.want,
+					got.Err,
+				)
+			}
+			if tt.want != scan.ErrorState && got.HTTPStatus != tt.wantStatus {
+				t.Fatalf(
+					"status = %d, want %d",
+					got.HTTPStatus,
+					tt.wantStatus,
+				)
+			}
+			if tt.want == scan.ErrorState && got.Err == nil {
+				t.Fatal("want body read error")
+			}
+		})
+	}
+}
+
+type errReadCloser struct{ err error }
+
+func (e *errReadCloser) Read([]byte) (int, error) { return 0, e.err }
+func (e *errReadCloser) Close() error             { return nil }
+
+func TestRunCancelMidFlight(t *testing.T) {
+	block := make(chan struct{})
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			select {
+			case <-block:
+			case <-r.Context().Done():
+			}
+			w.WriteHeader(http.StatusOK)
+		}),
+	)
+	t.Cleanup(srv.Close)
+	t.Cleanup(func() { close(block) })
+
+	sites := make([]catalog.Site, 40)
+	for i := range sites {
+		sites[i] = catalog.Site{
+			Name:       "Site" + strconv.Itoa(i),
+			HomeURL:    srv.URL,
+			ProfileURL: srv.URL + "/{username}/" + strconv.Itoa(i),
+			Method:     http.MethodGet,
+			Check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
+		}
+	}
+
+	sc, err := scan.New(scan.Options{
+		Client:  srv.Client(),
+		Workers: 8,
+		Timeout: 5 * time.Second,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	out := sc.Run(ctx, "alice", sites)
+	cancel()
+
+	n := 0
+	for range out {
+		n++
+	}
+	// Channel must close; some results may have been sent before cancel.
+	t.Logf("received %d results before cancel drained", n)
+}
+
+func TestStatusCheckSkipsMultiMiBBody(t *testing.T) {
+	var readBytes int
+	payload := strings.Repeat("y", 2<<20)
+	tr := &seqTransport{
+		fn: func(req *http.Request, _ int) (*http.Response, error) {
+			body := &countingReadCloser{
+				r: io.NopCloser(strings.NewReader(payload)),
+				n: &readBytes,
+			}
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       body,
+				Header:     make(http.Header),
+				Request:    req,
+			}, nil
+		},
+	}
+	sites := make([]catalog.Site, 5)
+	for i := range sites {
+		sites[i] = catalog.Site{
+			Name:       "Big" + strconv.Itoa(i),
+			HomeURL:    "https://example.com",
+			ProfileURL: "https://example.com/{username}/" + strconv.Itoa(i),
+			Method:     http.MethodGet,
+			Check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
+		}
+	}
+	sc, err := scan.New(scan.Options{
+		Client:  &http.Client{Transport: tr},
+		Workers: 2,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range sc.Run(context.Background(), "alice", sites) {
+	}
+	if readBytes != 0 {
+		t.Fatalf("body bytes read = %d, want 0 across catalog", readBytes)
 	}
 }

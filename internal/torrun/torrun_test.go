@@ -4,8 +4,11 @@ import (
 	"context"
 	"io"
 	"net"
+	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"testing"
 	"time"
 
@@ -157,5 +160,135 @@ func TestEnsureMissingBinary(t *testing.T) {
 	})
 	if err == nil {
 		t.Fatal("Ensure() error = nil, want error when binary missing")
+	}
+}
+
+func writeTorStub(t *testing.T, src string) string {
+	t.Helper()
+	dir := t.TempDir()
+	srcPath := filepath.Join(dir, "stub.go")
+	if err := os.WriteFile(srcPath, []byte(src), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	bin := filepath.Join(dir, "tor-stub")
+	cmd := exec.Command("go", "build", "-o", bin, srcPath)
+	cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("build stub: %v\n%s", err, out)
+	}
+	return bin
+}
+
+func TestEnsureStartupTimeout(t *testing.T) {
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	addr := ln.Addr().String()
+	_ = ln.Close()
+
+	stub := writeTorStub(t, `package main
+import "time"
+func main() { time.Sleep(30 * time.Second) }
+`)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err = torrun.Ensure(ctx, torrun.Options{
+		SocksAddr:      addr,
+		Binary:         stub,
+		StartupTimeout: 300 * time.Millisecond,
+	})
+	if err == nil {
+		t.Fatal("Ensure() error = nil, want startup timeout")
+	}
+	if !strings.Contains(err.Error(), "timed out") {
+		t.Fatalf("Ensure() error = %v, want timed out", err)
+	}
+}
+
+func TestEnsureCloseKillsStub(t *testing.T) {
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	addr := ln.Addr().String()
+	_ = ln.Close()
+
+	stub := writeTorStub(t, `package main
+import (
+	"io"
+	"net"
+	"os"
+	"os/signal"
+	"time"
+)
+func main() {
+	signal.Ignore(os.Interrupt)
+	var addr string
+	for i, a := range os.Args {
+		if a == "--SocksPort" && i+1 < len(os.Args) {
+			addr = os.Args[i+1]
+		}
+	}
+	if addr == "" {
+		os.Exit(2)
+	}
+	ln, err := net.Listen("tcp", addr)
+	if err != nil {
+		os.Exit(1)
+	}
+	go func() {
+		for {
+			c, err := ln.Accept()
+			if err != nil {
+				return
+			}
+			go func(c net.Conn) {
+				defer c.Close()
+				_ = c.SetDeadline(time.Now().Add(time.Second))
+				buf := make([]byte, 3)
+				_, _ = io.ReadFull(c, buf)
+				_, _ = c.Write([]byte{0x05, 0x00})
+			}(c)
+		}
+	}()
+	select {}
+}
+`)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	inst, err := torrun.Ensure(ctx, torrun.Options{
+		SocksAddr:      addr,
+		Binary:         stub,
+		StartupTimeout: 3 * time.Second,
+	})
+	if err != nil {
+		t.Fatalf("Ensure() error = %v", err)
+	}
+	if !inst.StartedByUs() {
+		t.Fatal("StartedByUs = false, want true")
+	}
+	pid := inst.Pid()
+	if pid == 0 {
+		t.Fatal("Pid = 0")
+	}
+	if err := inst.Close(); err != nil {
+		t.Fatalf("Close() error = %v", err)
+	}
+	deadline := time.Now().Add(2 * time.Second)
+	for {
+		err := syscall.Kill(pid, 0)
+		if err != nil {
+			return
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("pid %d still alive after Close", pid)
+		}
+		time.Sleep(50 * time.Millisecond)
 	}
 }

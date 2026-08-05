@@ -2,8 +2,11 @@ package report_test
 
 import (
 	"bytes"
+	"fmt"
+	"io"
 	"regexp"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -54,6 +57,22 @@ func TestWriteCSV(t *testing.T) {
 	}
 	if !strings.Contains(lines[1], "octocat,GitHub,") {
 		t.Fatalf("row = %q", lines[1])
+	}
+
+	buf.Reset()
+	if err := report.WriteCSV(&buf, "octocat", results, false); err != nil {
+		t.Fatal(err)
+	}
+	all := strings.Split(strings.TrimSpace(buf.String()), "\n")
+	if len(all) != 3 {
+		t.Fatalf(
+			"foundOnly=false lines = %d, want 3\n%s",
+			len(all),
+			buf.String(),
+		)
+	}
+	if !strings.Contains(all[2], "Missing") {
+		t.Fatalf("missing not-found row: %q", buf.String())
 	}
 }
 
@@ -183,4 +202,28 @@ func TestPrinterVerboseNotFound(t *testing.T) {
 	if !strings.Contains(out, "[-] Gone: not found") {
 		t.Fatalf("verbose not-found missing: %q", out)
 	}
+}
+
+func TestPrinterConcurrentStartedResult(t *testing.T) {
+	p := &report.Printer{Out: io.Discard, Color: true}
+	var wg sync.WaitGroup
+	const n = 50
+	for i := 0; i < n; i++ {
+		wg.Add(2)
+		name := fmt.Sprintf("Site%d", i)
+		go func(site string) {
+			defer wg.Done()
+			p.Started(site)
+		}(name)
+		go func(site string) {
+			defer wg.Done()
+			p.Result(scan.Result{
+				Site:       catalog.Site{Name: site},
+				ProfileURL: "https://example.com/" + site,
+				Exists:     scan.Found,
+			})
+		}(name)
+	}
+	wg.Wait()
+	p.Summary(n, n, time.Millisecond)
 }
