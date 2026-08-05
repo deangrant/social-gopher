@@ -5,8 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
+	"net/url"
 	"os"
+	"regexp"
 	"strings"
+	"unicode/utf8"
 )
 
 // CheckType identifies how a site probe decides whether a profile exists.
@@ -17,6 +21,27 @@ const (
 	CheckBody     CheckType = "body"
 	CheckRedirect CheckType = "redirect"
 )
+
+const (
+	maxUsernamePatternLen = 256
+	maxHeaderCount        = 16
+	maxHeaderNameLen      = 256
+	maxHeaderValueLen     = 1024
+	urlUsernameToken      = "x"
+)
+
+var forbiddenHeaders = map[string]struct{}{
+	"host":                {},
+	"content-length":      {},
+	"transfer-encoding":   {},
+	"connection":          {},
+	"keep-alive":          {},
+	"upgrade":             {},
+	"te":                  {},
+	"trailer":             {},
+	"proxy-connection":    {},
+	"proxy-authorization": {},
+}
 
 // Scan profile names (CLI -profile and per-site introducing wave).
 const (
@@ -206,6 +231,17 @@ func validateSite(s *Site) error {
 	if s.ProbeURL != "" && !strings.Contains(s.ProbeURL, "{username}") {
 		return fmt.Errorf("probe_url must contain {username}")
 	}
+	if err := validateCatalogURL("home_url", s.HomeURL); err != nil {
+		return err
+	}
+	if err := validateCatalogURL("profile_url", s.ProfileURL); err != nil {
+		return err
+	}
+	if s.ProbeURL != "" {
+		if err := validateCatalogURL("probe_url", s.ProbeURL); err != nil {
+			return err
+		}
+	}
 	s.Profile = strings.TrimSpace(strings.ToLower(s.Profile))
 	if s.Profile == "" {
 		return fmt.Errorf("profile is required")
@@ -230,11 +266,103 @@ func validateSite(s *Site) error {
 	if s.Method != "" {
 		m := strings.ToUpper(s.Method)
 		switch m {
-		case "GET", "HEAD", "POST":
+		case "GET", "HEAD":
 			s.Method = m
 		default:
 			return fmt.Errorf("unsupported method %q", s.Method)
 		}
+	}
+	if err := validateHeaders(s.Headers); err != nil {
+		return err
+	}
+	if err := validateUsernamePattern(s.UsernamePattern); err != nil {
+		return err
+	}
+	return nil
+}
+
+func validateCatalogURL(field, raw string) error {
+	replaced := strings.ReplaceAll(raw, "{username}", urlUsernameToken)
+	u, err := url.Parse(replaced)
+	if err != nil {
+		return fmt.Errorf("%s: %w", field, err)
+	}
+	switch strings.ToLower(u.Scheme) {
+	case "http", "https":
+	default:
+		return fmt.Errorf("%s: scheme must be http or https", field)
+	}
+	if u.Host == "" {
+		return fmt.Errorf("%s: host is required", field)
+	}
+	if u.User != nil {
+		return fmt.Errorf("%s: userinfo is not allowed", field)
+	}
+	host := u.Hostname()
+	if host == "" {
+		return fmt.Errorf("%s: host is required", field)
+	}
+	if err := rejectUnsafeHost(host); err != nil {
+		return fmt.Errorf("%s: %w", field, err)
+	}
+	return nil
+}
+
+func rejectUnsafeHost(host string) error {
+	h := strings.ToLower(strings.TrimSpace(host))
+	if h == "localhost" || h == "metadata" ||
+		h == "metadata.google.internal" ||
+		strings.HasSuffix(h, ".localhost") {
+		return fmt.Errorf("host %q is not allowed", host)
+	}
+	if ip := net.ParseIP(h); ip != nil {
+		if ip.IsLoopback() || ip.IsPrivate() || ip.IsLinkLocalUnicast() ||
+			ip.IsLinkLocalMulticast() || ip.IsUnspecified() ||
+			ip.IsMulticast() {
+			return fmt.Errorf("host %q is not allowed", host)
+		}
+		return nil
+	}
+	return nil
+}
+
+func validateHeaders(headers map[string]string) error {
+	if len(headers) == 0 {
+		return nil
+	}
+	if len(headers) > maxHeaderCount {
+		return fmt.Errorf("too many headers (max %d)", maxHeaderCount)
+	}
+	for name, value := range headers {
+		if utf8.RuneCountInString(name) > maxHeaderNameLen {
+			return fmt.Errorf("header name too long")
+		}
+		if utf8.RuneCountInString(value) > maxHeaderValueLen {
+			return fmt.Errorf("header value too long")
+		}
+		key := strings.ToLower(strings.TrimSpace(name))
+		if key == "" {
+			return fmt.Errorf("header name is required")
+		}
+		if _, ok := forbiddenHeaders[key]; ok {
+			return fmt.Errorf("header %q is not allowed", name)
+		}
+	}
+	return nil
+}
+
+func validateUsernamePattern(pattern string) error {
+	if pattern == "" {
+		return nil
+	}
+	if utf8.RuneCountInString(pattern) > maxUsernamePatternLen {
+		return fmt.Errorf(
+			"username_pattern too long (max %d)",
+			maxUsernamePatternLen,
+		)
+	}
+	if _, err := regexp.Compile(pattern); err != nil {
+		return fmt.Errorf("username_pattern: %w", err)
 	}
 	return nil
 }

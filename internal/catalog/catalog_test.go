@@ -129,6 +129,130 @@ func TestLoadRejectsInvalid(t *testing.T) {
 				}]
 			}`,
 		},
+		{
+			name: "ftp scheme",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"ftp://x.test",
+					"profile_url":"ftp://x.test/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "loopback host",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"http://127.0.0.1",
+					"profile_url":"http://127.0.0.1/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "private host",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"http://10.0.0.1",
+					"profile_url":"http://10.0.0.1/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "metadata ip",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"http://169.254.169.254",
+					"profile_url":"http://169.254.169.254/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "localhost host",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"http://localhost",
+					"profile_url":"http://localhost/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "metadata hostname",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"http://metadata.google.internal",
+					"profile_url":"http://metadata.google.internal/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "post method",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"https://x.test/{username}",
+					"method":"POST",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "forbidden header",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"https://x.test/{username}",
+					"headers":{"Host":"evil.test"},
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "invalid username_pattern",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"https://x.test/{username}",
+					"username_pattern":"[",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "username_pattern too long",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"https://x.test/{username}",
+					"username_pattern":"` + strings.Repeat("a", 257) + `",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

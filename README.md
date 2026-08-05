@@ -59,7 +59,7 @@ social-gopher -proxy socks5h://127.0.0.1:9050 alice
 | `-site` | all | Repeatable site name filter |
 | `-nsfw` | off | Include NSFW-tagged sites |
 | `-v`, `-verbose` | off | Print non-hits and errors |
-| `-catalog` | bundled | Path to a custom `sites.json` |
+| `-catalog` | bundled | Path to a custom `sites.json` (trust boundary: only load files you trust) |
 | `-validate-catalog` | off | Probe `username_claimed` / `username_unclaimed` self-tests (no scan username) |
 
 `-profile` selects site groups as `default` plus each named profile (non-cumulative; repeatable). `full` scans the entire catalog. Applied before `-site` / `-nsfw`.
@@ -77,6 +77,8 @@ First bootstrap of a freshly started Tor can take ~30–60s. `socks5h` sends DNS
 ## Site catalog
 
 The default catalog is embedded from [`data/sites.json`](data/sites.json). It is an original curated list (400+ sites across developer, creative, music, gaming, finance, regional, and niche communities) using status / body / redirect checks. Add sites by editing that file; no code changes are required. Grow coverage in verified batches using `-validate-catalog`.
+
+Custom `-catalog` files are a trust boundary. Load rejects non-`http`/`https` URLs, private/link-local/metadata hosts, `POST`, dangerous hop-by-hop/`Host` headers, and invalid or over-long `username_pattern` values. DNS rebinding is a residual risk if a hostname later resolves to a private address.
 
 ### Schema
 
@@ -114,6 +116,8 @@ The default catalog is embedded from [`data/sites.json`](data/sites.json). It is
 | `redirect` | Does not follow redirects; exists on 2xx, otherwise missing |
 
 Use `{username}` in `profile_url` / `probe_url`. `probe_url` is optional when the check URL differs from the public profile link.
+
+`method`, when set, must be `GET` or `HEAD` (default depends on check type).
 
 `not_found_text` is required for `body` checks and optional on `status` as a soft-404 guard.
 
