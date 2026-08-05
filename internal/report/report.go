@@ -199,7 +199,12 @@ func (p *Printer) runSpinner(stop <-chan struct{}) {
 			return
 		case <-t.C:
 			p.mu.Lock()
-			if !p.spinning || len(p.inflight) == 0 {
+			if !p.spinning {
+				p.mu.Unlock()
+				return
+			}
+			if len(p.inflight) == 0 {
+				p.stopSpinnerLocked()
 				p.mu.Unlock()
 				return
 			}
