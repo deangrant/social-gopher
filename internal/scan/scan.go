@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -149,13 +148,13 @@ func (s *Scanner) Check(
 	}
 
 	if site.UsernamePattern != "" {
-		re, err := regexp.Compile(site.UsernamePattern)
+		ok, err := site.UsernameMatches(username)
 		if err != nil {
 			res.Exists = ErrorState
-			res.Err = fmt.Errorf("username_pattern: %w", err)
+			res.Err = err
 			return res
 		}
-		if !re.MatchString(username) {
+		if !ok {
 			res.Exists = Invalid
 			return res
 		}

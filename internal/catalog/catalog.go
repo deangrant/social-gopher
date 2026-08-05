@@ -99,6 +99,9 @@ type Site struct {
 	UsernameUnclaimed string            `json:"username_unclaimed,omitempty"`
 	Profile           string            `json:"profile"`
 	NSFW              bool              `json:"nsfw,omitempty"`
+
+	// usernameRE is set during Load when UsernamePattern is non-empty.
+	usernameRE *regexp.Regexp
 }
 
 type fileSchema struct {
@@ -275,10 +278,28 @@ func validateSite(s *Site) error {
 	if err := validateHeaders(s.Headers); err != nil {
 		return err
 	}
-	if err := validateUsernamePattern(s.UsernamePattern); err != nil {
+	if err := validateUsernamePattern(s); err != nil {
 		return err
 	}
 	return nil
+}
+
+// UsernameMatches reports whether username is allowed by UsernamePattern.
+// Sites with no pattern always match. Hand-built Sites that skip Load compile
+// the pattern on each call; Load-validated Sites reuse the cached regexp.
+func (s Site) UsernameMatches(username string) (bool, error) {
+	re := s.usernameRE
+	if re == nil && s.UsernamePattern != "" {
+		var err error
+		re, err = regexp.Compile(s.UsernamePattern)
+		if err != nil {
+			return false, fmt.Errorf("username_pattern: %w", err)
+		}
+	}
+	if re == nil {
+		return true, nil
+	}
+	return re.MatchString(username), nil
 }
 
 func validateCatalogURL(field, raw string) error {
@@ -351,18 +372,20 @@ func validateHeaders(headers map[string]string) error {
 	return nil
 }
 
-func validateUsernamePattern(pattern string) error {
-	if pattern == "" {
+func validateUsernamePattern(s *Site) error {
+	if s.UsernamePattern == "" {
 		return nil
 	}
-	if utf8.RuneCountInString(pattern) > maxUsernamePatternLen {
+	if utf8.RuneCountInString(s.UsernamePattern) > maxUsernamePatternLen {
 		return fmt.Errorf(
 			"username_pattern too long (max %d)",
 			maxUsernamePatternLen,
 		)
 	}
-	if _, err := regexp.Compile(pattern); err != nil {
+	re, err := regexp.Compile(s.UsernamePattern)
+	if err != nil {
 		return fmt.Errorf("username_pattern: %w", err)
 	}
+	s.usernameRE = re
 	return nil
 }

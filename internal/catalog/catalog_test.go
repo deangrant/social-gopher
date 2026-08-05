@@ -52,6 +52,56 @@ func TestLoadValid(t *testing.T) {
 	}
 }
 
+func TestUsernameMatchesAfterLoad(t *testing.T) {
+	const src = `{
+		"sites": [{
+			"name": "Pat",
+			"home_url": "https://example.com",
+			"profile_url": "https://example.com/{username}",
+			"username_pattern": "^[a-z]+$",
+			"check": { "type": "status" },
+			"profile": "default"
+		}]
+	}`
+	sites, err := catalog.Load(strings.NewReader(src))
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	ok, err := sites[0].UsernameMatches("alice")
+	if err != nil {
+		t.Fatalf("UsernameMatches(alice) error = %v", err)
+	}
+	if !ok {
+		t.Fatal("UsernameMatches(alice) = false, want true")
+	}
+	ok, err = sites[0].UsernameMatches("Bad_User")
+	if err != nil {
+		t.Fatalf("UsernameMatches(Bad_User) error = %v", err)
+	}
+	if ok {
+		t.Fatal("UsernameMatches(Bad_User) = true, want false")
+	}
+}
+
+func TestUsernameMatchesNoPattern(t *testing.T) {
+	site := catalog.Site{Name: "X"}
+	ok, err := site.UsernameMatches("any")
+	if err != nil {
+		t.Fatalf("UsernameMatches() error = %v", err)
+	}
+	if !ok {
+		t.Fatal("UsernameMatches() = false, want true")
+	}
+}
+
+func TestUsernameMatchesHandBuiltInvalid(t *testing.T) {
+	site := catalog.Site{UsernamePattern: "["}
+	_, err := site.UsernameMatches("x")
+	if err == nil {
+		t.Fatal("UsernameMatches() error = nil, want error")
+	}
+}
+
 func TestLoadRejectsInvalid(t *testing.T) {
 	tests := []struct {
 		name string

@@ -403,6 +403,32 @@ func TestUsernamePatternInvalid(t *testing.T) {
 	}
 }
 
+func TestUsernamePatternLoaded(t *testing.T) {
+	const src = `{
+		"sites": [{
+			"name": "Pat",
+			"home_url": "https://example.com",
+			"profile_url": "https://example.com/{username}",
+			"username_pattern": "^[a-z]+$",
+			"check": { "type": "status", "not_found_status": [404] },
+			"profile": "default"
+		}]
+	}`
+	sites, err := catalog.Load(strings.NewReader(src))
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	sc, err := scan.New(scan.Options{Client: http.DefaultClient, Workers: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for r := range sc.Run(context.Background(), "Bad_User", sites) {
+		if r.Exists != scan.Invalid {
+			t.Fatalf("exists = %v, want invalid", r.Exists)
+		}
+	}
+}
+
 func TestOnStart(t *testing.T) {
 	srv := httptest.NewServer(
 		http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
