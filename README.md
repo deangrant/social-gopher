@@ -50,7 +50,7 @@ social-gopher -proxy socks5h://127.0.0.1:9050 alice
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `-csv` | off | Write found results to `{username}.csv` |
+| `-csv` | off | Write found results to a sanitized `{username}.csv` in the current directory (path separators replaced) |
 | `-tor` | off | Use Tor (reuse existing SOCKS or start system `tor`) |
 | `-proxy` | | Proxy URL (`socks5h://`, `socks5://`, `http://`, `https://`) |
 | `-timeout` | `20s` | Per-request timeout |
@@ -141,7 +141,7 @@ social-gopher -validate-catalog
 ## Output
 
 - **Terminal** (default): white live checking status with a rotating `[|] [/] [-] [\]` spinner (TTY only; cleared when done), green `[+] Site:` for found profiles, then a summary. Non-hits stay off-screen unless `-v`.
-- **CSV** (`-csv`): `username,name,home_url,profile_url,exists,http_status,response_time_s` (found rows only)
+- **CSV** (`-csv`): `username,name,home_url,profile_url,exists,http_status,response_time_s` (found rows only). The file is written as a sanitized `{username}.csv` in the current working directory (`/`, `\`, and NUL become `_`).
 
 Colors and the ephemeral status line are enabled only when stdout is a terminal.
 

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -190,7 +191,11 @@ func run(args []string) int {
 	printer.Summary(found, checked, time.Since(start))
 
 	if *csvOut {
-		path := username + ".csv"
+		path, err := csvOutputPath(username)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "csv path: %v\n", err)
+			return 1
+		}
 		if err := writeCSV(path, username, results); err != nil {
 			fmt.Fprintf(os.Stderr, "write csv: %v\n", err)
 			return 1
@@ -311,6 +316,25 @@ func exitOnInterrupt(err error) int {
 		return 130
 	}
 	return 1
+}
+
+// csvOutputPath returns a cwd-relative CSV filename derived from username.
+// Path separators and NUL are replaced so the file cannot escape the
+// working directory.
+func csvOutputPath(username string) (string, error) {
+	mapped := strings.Map(func(r rune) rune {
+		switch r {
+		case '/', '\\', 0:
+			return '_'
+		default:
+			return r
+		}
+	}, username)
+	name := filepath.Base(mapped)
+	if name == "" || name == "." || name == ".." {
+		return "", fmt.Errorf("username is unsafe for csv filename")
+	}
+	return name + ".csv", nil
 }
 
 func writeCSV(path, username string, results []scan.Result) error {
