@@ -303,6 +303,44 @@ func TestLoadRejectsInvalid(t *testing.T) {
 				}]
 			}`,
 		},
+		{
+			name: "unknown top-level field",
+			src: `{
+				"version":1,
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"https://x.test/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "unknown site field",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"https://x.test/{username}",
+					"profile_ur":"https://x.test/{username}",
+					"check":{"type":"status"},
+					"profile":"default"
+				}]
+			}`,
+		},
+		{
+			name: "unknown check field",
+			src: `{
+				"sites":[{
+					"name":"X",
+					"home_url":"https://x.test",
+					"profile_url":"https://x.test/{username}",
+					"check":{"type":"status","not_found_stauts":[404]},
+					"profile":"default"
+				}]
+			}`,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

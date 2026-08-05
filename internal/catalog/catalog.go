@@ -119,9 +119,12 @@ func LoadFile(path string) ([]Site, error) {
 }
 
 // Load reads and validates a catalog JSON document from r.
+// Unknown JSON fields are rejected.
 func Load(r io.Reader) ([]Site, error) {
 	var doc fileSchema
-	if err := json.NewDecoder(r).Decode(&doc); err != nil {
+	dec := json.NewDecoder(r)
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&doc); err != nil {
 		return nil, fmt.Errorf("decode catalog: %w", err)
 	}
 	if len(doc.Sites) == 0 {
