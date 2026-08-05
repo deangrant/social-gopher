@@ -443,31 +443,31 @@ func TestOnStart(t *testing.T) {
 	}
 }
 
-type seqDoer struct {
+type seqTransport struct {
 	mu    sync.Mutex
 	calls []string
 	fn    func(req *http.Request, n int) (*http.Response, error)
 }
 
-func (d *seqDoer) Do(req *http.Request) (*http.Response, error) {
-	d.mu.Lock()
-	n := len(d.calls)
-	d.calls = append(d.calls, req.Method)
-	fn := d.fn
-	d.mu.Unlock()
+func (t *seqTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	t.mu.Lock()
+	n := len(t.calls)
+	t.calls = append(t.calls, req.Method)
+	fn := t.fn
+	t.mu.Unlock()
 	return fn(req, n)
 }
 
-func (d *seqDoer) methods() []string {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-	out := make([]string, len(d.calls))
-	copy(out, d.calls)
+func (t *seqTransport) methods() []string {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	out := make([]string, len(t.calls))
+	copy(out, t.calls)
 	return out
 }
 
 func TestSharedProbeTimeoutSkipsGETRetry(t *testing.T) {
-	d := &seqDoer{
+	tr := &seqTransport{
 		fn: func(req *http.Request, _ int) (*http.Response, error) {
 			if req.Method != http.MethodHead {
 				t.Errorf("unexpected method %s", req.Method)
@@ -488,7 +488,7 @@ func TestSharedProbeTimeoutSkipsGETRetry(t *testing.T) {
 	}
 	timeout := 50 * time.Millisecond
 	sc, err := scan.New(scan.Options{
-		Client:  d,
+		Client:  &http.Client{Transport: tr},
 		Workers: 1,
 		Timeout: timeout,
 	})
@@ -503,7 +503,7 @@ func TestSharedProbeTimeoutSkipsGETRetry(t *testing.T) {
 	if res.Exists != scan.ErrorState {
 		t.Fatalf("exists = %v, want error", res.Exists)
 	}
-	methods := d.methods()
+	methods := tr.methods()
 	if len(methods) != 1 || methods[0] != http.MethodHead {
 		t.Fatalf("methods = %v, want [HEAD] only", methods)
 	}
@@ -524,7 +524,7 @@ func TestSharedProbeTimeoutSkipsGETRetry(t *testing.T) {
 }
 
 func TestFastHEADFailureStillRetriesGET(t *testing.T) {
-	d := &seqDoer{
+	tr := &seqTransport{
 		fn: func(req *http.Request, _ int) (*http.Response, error) {
 			if req.Method == http.MethodHead {
 				return nil, errors.New("head blocked")
@@ -546,7 +546,7 @@ func TestFastHEADFailureStillRetriesGET(t *testing.T) {
 		},
 	}
 	sc, err := scan.New(scan.Options{
-		Client:  d,
+		Client:  &http.Client{Transport: tr},
 		Workers: 1,
 		Timeout: time.Second,
 	})
@@ -558,10 +558,59 @@ func TestFastHEADFailureStillRetriesGET(t *testing.T) {
 	if res.Exists != scan.Found {
 		t.Fatalf("exists = %v, want found (err=%v)", res.Exists, res.Err)
 	}
-	methods := d.methods()
+	methods := tr.methods()
 	if len(methods) != 2 ||
 		methods[0] != http.MethodHead ||
 		methods[1] != http.MethodGet {
 		t.Fatalf("methods = %v, want [HEAD GET]", methods)
+	}
+}
+
+func TestNoRedirectOverridesFollowingClient(t *testing.T) {
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasSuffix(r.URL.Path, "/missing") {
+				http.Redirect(w, r, "/login", http.StatusFound)
+				return
+			}
+			if r.URL.Path == "/login" {
+				w.WriteHeader(http.StatusOK)
+				_, _ = w.Write([]byte("please sign in"))
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("profile"))
+		}),
+	)
+	t.Cleanup(srv.Close)
+
+	following := &http.Client{
+		Transport: srv.Client().Transport,
+		// Default CheckRedirect follows redirects.
+	}
+	site := catalog.Site{
+		Name:       "FollowOverride",
+		HomeURL:    srv.URL,
+		ProfileURL: srv.URL + "/{username}",
+		Method:     http.MethodGet,
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
+	}
+	sc, err := scan.New(scan.Options{Client: following, Workers: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	got := sc.Check(context.Background(), "missing", site)
+	if got.Exists == scan.Found {
+		t.Fatal("exists = found; must not follow redirect to final 200")
+	}
+	if got.Exists != scan.Unknown {
+		t.Fatalf("exists = %v, want unknown", got.Exists)
+	}
+	if got.HTTPStatus != http.StatusFound {
+		t.Fatalf("status = %d, want 302", got.HTTPStatus)
 	}
 }

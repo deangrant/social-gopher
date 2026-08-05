@@ -25,11 +25,6 @@ const (
 	ErrorState Existence = "error"
 )
 
-// Doer is the HTTP subset scan needs. *http.Client satisfies it.
-type Doer interface {
-	Do(req *http.Request) (*http.Response, error)
-}
-
 // Result is the outcome of probing one site.
 type Result struct {
 	Site         catalog.Site
@@ -43,7 +38,8 @@ type Result struct {
 
 // Options configures a Scanner.
 type Options struct {
-	Client  Doer
+	// Client is used for probes. Redirects are disabled via CheckRedirect.
+	Client  *http.Client
 	Workers int
 	// Timeout is the per-site probe budget shared by HEAD and any GET retry.
 	// If unset or non-positive, defaults to 20s.
@@ -54,7 +50,7 @@ type Options struct {
 
 // Scanner runs concurrent username probes.
 type Scanner struct {
-	client  Doer
+	client  *http.Client
 	workers int
 	timeout time.Duration
 	onStart func(site catalog.Site)
@@ -308,21 +304,10 @@ func urlPathEscape(username string) string {
 	return b.String()
 }
 
-type redirectDoer struct {
-	base Doer
-}
-
-func noRedirectClient(base Doer) Doer {
-	if c, ok := base.(*http.Client); ok {
-		clone := *c
-		clone.CheckRedirect = func(_ *http.Request, _ []*http.Request) error {
-			return http.ErrUseLastResponse
-		}
-		return &clone
+func noRedirectClient(c *http.Client) *http.Client {
+	clone := *c
+	clone.CheckRedirect = func(_ *http.Request, _ []*http.Request) error {
+		return http.ErrUseLastResponse
 	}
-	return &redirectDoer{base: base}
-}
-
-func (d *redirectDoer) Do(req *http.Request) (*http.Response, error) {
-	return d.base.Do(req)
+	return &clone
 }

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -219,7 +220,7 @@ func run(args []string) int {
 
 func runValidate(
 	ctx context.Context,
-	client scan.Doer,
+	client *http.Client,
 	sites []catalog.Site,
 	timeout time.Duration,
 ) int {
