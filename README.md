@@ -145,7 +145,7 @@ social-gopher -validate-catalog
 ## Output
 
 - **Terminal** (default): white live checking status with a rotating `[|] [/] [-] [\]` spinner (TTY only; cleared when done), green `[+] Site:` for found profiles, then a summary. Non-hits stay off-screen unless `-v`.
-- **CSV** (`-csv`): `username,name,home_url,profile_url,exists,http_status,response_time_s` (found rows only). The file is written as a sanitized `{username}.csv` in the current working directory (`/`, `\`, and NUL become `_`).
+- **CSV** (`-csv`): `username,name,home_url,profile_url,exists,http_status,response_time_s` (found rows only). The file is written as a sanitized `{username}.csv` in the current working directory (`/`, `\`, and NUL become `_`). Cells starting with `=`, `+`, `-`, `@`, tab, or CR are prefixed with `'` to avoid spreadsheet formula injection.
 
 Colors and the ephemeral status line are enabled only when stdout is a terminal.
 

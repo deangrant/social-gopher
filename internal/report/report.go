@@ -255,13 +255,13 @@ func WriteCSV(
 			continue
 		}
 		row := []string{
-			username,
-			r.Site.Name,
-			r.Site.HomeURL,
-			r.ProfileURL,
-			string(r.Exists),
-			strconv.Itoa(r.HTTPStatus),
-			formatSeconds(r.ResponseTime),
+			csvCell(username),
+			csvCell(r.Site.Name),
+			csvCell(r.Site.HomeURL),
+			csvCell(r.ProfileURL),
+			csvCell(string(r.Exists)),
+			csvCell(strconv.Itoa(r.HTTPStatus)),
+			csvCell(formatSeconds(r.ResponseTime)),
 		}
 		if err := cw.Write(row); err != nil {
 			return err
@@ -269,6 +269,20 @@ func WriteCSV(
 	}
 	cw.Flush()
 	return cw.Error()
+}
+
+// csvCell prefixes formula-leading values so spreadsheet apps
+// treat them as text.
+func csvCell(v string) string {
+	if v == "" {
+		return v
+	}
+	switch v[0] {
+	case '=', '+', '-', '@', '\t', '\r':
+		return "'" + v
+	default:
+		return v
+	}
 }
 
 func formatSeconds(d time.Duration) string {

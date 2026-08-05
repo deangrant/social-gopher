@@ -57,6 +57,40 @@ func TestWriteCSV(t *testing.T) {
 	}
 }
 
+func TestWriteCSVFormulaInjection(t *testing.T) {
+	results := []scan.Result{
+		{
+			Site: catalog.Site{
+				Name:    "+cmd",
+				HomeURL: "=http://evil.example",
+			},
+			ProfileURL:   "@https://evil.example/x",
+			Exists:       scan.Found,
+			HTTPStatus:   200,
+			ResponseTime: time.Second,
+		},
+	}
+	var buf bytes.Buffer
+	if err := report.WriteCSV(&buf, "=1+1", results, true); err != nil {
+		t.Fatal(err)
+	}
+	row := strings.Split(strings.TrimSpace(buf.String()), "\n")[1]
+	wants := []string{
+		"'=1+1",
+		"'+cmd",
+		"'=http://evil.example",
+		"'@https://evil.example/x",
+	}
+	for _, want := range wants {
+		if !strings.Contains(row, want) {
+			t.Fatalf("row %q missing sanitized %q", row, want)
+		}
+	}
+	if strings.Contains(row, ",=1+1,") || strings.HasPrefix(row, "=1+1,") {
+		t.Fatalf("unsanitized username in row %q", row)
+	}
+}
+
 func TestPrinterColorOffFoundOnly(t *testing.T) {
 	var buf bytes.Buffer
 	p := &report.Printer{Out: &buf, Color: false}
