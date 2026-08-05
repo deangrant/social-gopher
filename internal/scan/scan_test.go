@@ -73,6 +73,119 @@ func TestClassifyStatus(t *testing.T) {
 	}
 }
 
+func TestStatusSoft404NotFoundText(t *testing.T) {
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			if strings.HasSuffix(r.URL.Path, "/missing") {
+				_, _ = w.Write([]byte("Sorry, user not found"))
+				return
+			}
+			_, _ = w.Write([]byte("welcome to the profile"))
+		}),
+	)
+	t.Cleanup(srv.Close)
+
+	site := catalog.Site{
+		Name:       "Soft404",
+		HomeURL:    srv.URL,
+		ProfileURL: srv.URL + "/{username}",
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+			NotFoundText:   []string{"user not found"},
+		},
+	}
+	sc, err := scan.New(scan.Options{Client: srv.Client(), Workers: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var missing, present scan.Existence
+	for r := range sc.Run(
+		context.Background(),
+		"missing",
+		[]catalog.Site{site},
+	) {
+		missing = r.Exists
+	}
+	if missing != scan.NotFound {
+		t.Fatalf("missing exists = %v, want not_found", missing)
+	}
+	for r := range sc.Run(
+		context.Background(),
+		"alice",
+		[]catalog.Site{site},
+	) {
+		present = r.Exists
+	}
+	if present != scan.Found {
+		t.Fatalf("alice exists = %v, want found", present)
+	}
+}
+
+func TestStatusSoft404ForcesGET(t *testing.T) {
+	var gotMethod string
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			gotMethod = r.Method
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("ok"))
+		}),
+	)
+	t.Cleanup(srv.Close)
+
+	withText := catalog.Site{
+		Name:       "WithText",
+		HomeURL:    srv.URL,
+		ProfileURL: srv.URL + "/{username}",
+		Method:     http.MethodHead,
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+			NotFoundText:   []string{"user not found"},
+		},
+	}
+	sc, err := scan.New(scan.Options{Client: srv.Client(), Workers: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range sc.Run(
+		context.Background(),
+		"alice",
+		[]catalog.Site{withText},
+	) {
+		continue
+	}
+	if gotMethod != http.MethodGet {
+		t.Fatalf("method = %q, want GET when not_found_text set", gotMethod)
+	}
+
+	gotMethod = ""
+	pure := catalog.Site{
+		Name:       "PureStatus",
+		HomeURL:    srv.URL,
+		ProfileURL: srv.URL + "/{username}",
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
+	}
+	for range sc.Run(
+		context.Background(),
+		"alice",
+		[]catalog.Site{pure},
+	) {
+		continue
+	}
+	if gotMethod != http.MethodHead {
+		t.Fatalf(
+			"method = %q, want HEAD for status without not_found_text",
+			gotMethod,
+		)
+	}
+}
+
 func TestClassifyBody(t *testing.T) {
 	srv := httptest.NewServer(
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

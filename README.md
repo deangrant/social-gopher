@@ -92,7 +92,8 @@ The default catalog is embedded from [`data/sites.json`](data/sites.json). It is
       "headers": {},
       "check": {
         "type": "status",
-        "not_found_status": [404]
+        "not_found_status": [404],
+        "not_found_text": ["user not found"]
       },
       "username_pattern": "^[a-zA-Z0-9-]+$",
       "username_claimed": "torvalds",
@@ -108,11 +109,13 @@ The default catalog is embedded from [`data/sites.json`](data/sites.json). It is
 
 | `check.type` | Meaning |
 |--------------|---------|
-| `status` | Does not follow redirects; exists on first-response 2xx unless status is in `not_found_status` (default `[404]`); other codes (including 3xx) are unknown |
+| `status` | Does not follow redirects; exists on first-response 2xx unless status is in `not_found_status` (default `[404]`) or optional `not_found_text` matches the body (soft-404; forces GET); other codes (including 3xx) are unknown |
 | `body` | Does not follow redirects; missing if the first-response body contains any `not_found_text` substring; else exists on 2xx |
 | `redirect` | Does not follow redirects; exists on 2xx, otherwise missing |
 
 Use `{username}` in `profile_url` / `probe_url`. `probe_url` is optional when the check URL differs from the public profile link.
+
+`not_found_text` is required for `body` checks and optional on `status` as a soft-404 guard.
 
 `username_claimed` / `username_unclaimed` are optional self-test fixtures (ignored during normal scans).
 

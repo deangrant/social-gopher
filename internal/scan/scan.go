@@ -162,7 +162,11 @@ func (s *Scanner) Check(
 	}
 
 	method := site.Method
-	if method == "" {
+	if site.Check.Type == catalog.CheckStatus &&
+		len(site.Check.NotFoundText) > 0 {
+		// Soft-404 text requires a response body.
+		method = http.MethodGet
+	} else if method == "" {
 		if site.Check.Type == catalog.CheckStatus {
 			method = http.MethodHead
 		} else {
@@ -233,16 +237,16 @@ func classify(site catalog.Site, status int, body string) Existence {
 				return NotFound
 			}
 		}
+		if bodyHasNotFoundText(site.Check.NotFoundText, body) {
+			return NotFound
+		}
 		if status >= 200 && status < 300 {
 			return Found
 		}
 		return Unknown
 	case catalog.CheckBody:
-		lower := strings.ToLower(body)
-		for _, text := range site.Check.NotFoundText {
-			if strings.Contains(lower, strings.ToLower(text)) {
-				return NotFound
-			}
+		if bodyHasNotFoundText(site.Check.NotFoundText, body) {
+			return NotFound
 		}
 		if status >= 200 && status < 300 {
 			return Found
@@ -256,6 +260,19 @@ func classify(site catalog.Site, status int, body string) Existence {
 	default:
 		return Unknown
 	}
+}
+
+func bodyHasNotFoundText(texts []string, body string) bool {
+	if len(texts) == 0 {
+		return false
+	}
+	lower := strings.ToLower(body)
+	for _, text := range texts {
+		if strings.Contains(lower, strings.ToLower(text)) {
+			return true
+		}
+	}
+	return false
 }
 
 func expandURL(tmpl, username string) string {
