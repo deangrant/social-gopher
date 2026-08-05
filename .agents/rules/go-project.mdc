@@ -1,0 +1,26 @@
+---
+description: Project layout, formatting, and Go package boundaries for social-gopher
+alwaysApply: true
+---
+
+# social-gopher Go project
+
+## Package map
+
+- `cmd/social-gopher` — CLI composition root only (flags, wiring, exit codes).
+- `internal/catalog` — load/validate/filter `sites.json`.
+- `internal/scan` — concurrent probes and existence classifiers.
+- `internal/report` — terminal printer and CSV export.
+- `internal/transport` — HTTP client, proxy/Tor dial options.
+- `internal/torrun` — optional system Tor process lifecycle.
+- `data/sites.json` — curated catalog (embedded at build time).
+
+Do not put business logic in `cmd`. Do not introduce new top-level packages without a clear boundary.
+
+## Style and tooling
+
+- Match [`.golangci.yml`](.golangci.yml): 80-column `lll` / `golines`, `gofmt`, `goimports`.
+- Prefer table-driven tests. Avoid new dependencies unless clearly justified.
+- For idiomatic Go style and SOLID package design, use the existing skills
+  `.agents/skills/google-go-style-guide` and `.agents/skills/solid-go-design`
+  instead of restating them here.

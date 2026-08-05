@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "bash .agents/hooks/gofmt.sh"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "bash .agents/hooks/guard-live-scan.sh"
+      }
+    ]
+  }
+}

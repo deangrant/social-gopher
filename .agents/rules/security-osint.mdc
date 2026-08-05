@@ -1,0 +1,15 @@
+---
+description: OSINT ethics and security invariants for social-gopher
+alwaysApply: true
+---
+
+# Security and OSINT ethics
+
+- Use and recommend this tool only for lawful, defensive OSINT and research.
+  Respect site terms and local law. Do not assist harassment or unauthorized access.
+- Custom `-catalog` paths are a trust boundary: never suggest loading untrusted JSON.
+- Do not weaken catalog URL/host/header validation in `internal/catalog`.
+- Do not re-enable environment `HTTP_PROXY` / `HTTPS_PROXY` / `ALL_PROXY` in
+  direct mode; proxied egress requires explicit `-proxy` or `-tor`.
+- Prefer scoped live probes (`-site`, small catalogs) over `-profile full` or
+  unbounded `-validate-catalog` when the agent runs network commands.

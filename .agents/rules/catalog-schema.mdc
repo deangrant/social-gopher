@@ -1,0 +1,42 @@
+---
+description: Catalog JSON schema, profiles, and load validation rules
+globs: data/sites.json,internal/catalog/**
+alwaysApply: false
+---
+
+# Catalog schema
+
+## Site object
+
+Required: `name`, `home_url`, `profile_url`, `check`, `profile`.
+
+Optional: `probe_url`, `method` (GET only; omit or GET), `headers`,
+`username_pattern`, `username_claimed`, `username_unclaimed`, `nsfw`.
+
+`profile_url` / `probe_url` must include `{username}` where the username goes.
+
+## Check types
+
+| `check.type` | Behavior |
+|--------------|----------|
+| `status` | First response only (no follow). 2xx = found unless status in `not_found_status` (default 404) or soft-404 `not_found_text` matches body. Other codes (incl. 3xx) = unknown. |
+| `body` | First response only. `not_found_text` substring => not found; else 2xx = found. |
+| `redirect` | First response only. 2xx = found; otherwise not found. |
+
+Unknown JSON fields are rejected (`DisallowUnknownFields`).
+
+## Profiles and NSFW
+
+Per-site `profile`: `default` | `developer` | `creative` | `community`.
+CLI `-profile` may also use `full`. NSFW sites need `"nsfw": true` and `-nsfw` to include.
+
+## Trust boundary (do not weaken)
+
+Load rejects: non-`http`/`https`, private/link-local/metadata hosts, `POST`,
+dangerous hop-by-hop / `Host` headers, invalid or over-long `username_pattern`.
+
+## After edits
+
+1. Rebuild so the embed updates: `go build -o social-gopher ./cmd/social-gopher`
+2. For sites with claimed/unclaimed fixtures:
+   `./social-gopher -validate-catalog -site <Name>`
