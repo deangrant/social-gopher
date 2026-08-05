@@ -12,6 +12,8 @@ import (
 )
 
 // DefaultTorProxy is the local Tor SOCKS5 endpoint with remote DNS.
+// Scheme socks5h is preferred; socks5 is accepted with the same remote-DNS
+// behavior (hostnames are sent through the proxy, unlike curl's socks5).
 const DefaultTorProxy = "socks5h://127.0.0.1:9050"
 
 // Options configures an HTTP client used for probing.
@@ -64,6 +66,17 @@ func New(opts Options) (Result, error) {
 		}
 		switch u.Scheme {
 		case "socks5", "socks5h":
+			// Both schemes resolve DNS via the proxy (socks5h / curl
+			// socks5h semantics). golang.org/x/net/proxy does the same.
+			if u.Scheme == "socks5" {
+				msg := "socks5:// uses remote DNS (same as socks5h); " +
+					"unlike curl"
+				if notice != "" {
+					notice = notice + "; " + msg
+				} else {
+					notice = msg
+				}
+			}
 			var auth *proxy.Auth
 			if u.User != nil {
 				pass, _ := u.User.Password()

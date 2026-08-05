@@ -45,7 +45,8 @@ func run(args []string) int {
 		proxyURL = fs.String(
 			"proxy",
 			"",
-			"proxy URL (socks5h://, socks5://, http://, https://)",
+			"proxy URL (socks5h://, socks5://, http://, https://); "+
+				"SOCKS schemes use remote DNS",
 		)
 		timeout = fs.Duration(
 			"timeout",

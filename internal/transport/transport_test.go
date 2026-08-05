@@ -61,3 +61,33 @@ func TestUnsupportedScheme(t *testing.T) {
 		t.Fatal("want error for unsupported scheme")
 	}
 }
+
+func TestSocks5RemoteDNSNotice(t *testing.T) {
+	res, err := transport.New(transport.Options{
+		Timeout:  time.Second,
+		ProxyURL: "socks5://127.0.0.1:9050",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Client == nil {
+		t.Fatal("Client is nil")
+	}
+	want := "socks5:// uses remote DNS (same as socks5h); unlike curl"
+	if res.Notice != want {
+		t.Fatalf("Notice = %q, want %q", res.Notice, want)
+	}
+}
+
+func TestSocks5hNoDNSNotice(t *testing.T) {
+	res, err := transport.New(transport.Options{
+		Timeout:  time.Second,
+		ProxyURL: "socks5h://127.0.0.1:9050",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Notice != "" {
+		t.Fatalf("Notice = %q, want empty for socks5h", res.Notice)
+	}
+}

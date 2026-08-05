@@ -52,7 +52,7 @@ social-gopher -proxy socks5h://127.0.0.1:9050 alice
 |------|---------|-------------|
 | `-csv` | off | Write found results to a sanitized `{username}.csv` in the current directory (path separators replaced) |
 | `-tor` | off | Use Tor (reuse existing SOCKS or start system `tor`) |
-| `-proxy` | | Proxy URL (`socks5h://`, `socks5://`, `http://`, `https://`) |
+| `-proxy` | | Proxy URL (`socks5h://`, `socks5://`, `http://`, `https://`); SOCKS schemes resolve DNS through the proxy |
 | `-timeout` | `20s` | Per-site probe budget (shared by HEAD and any GET retry) |
 | `-workers` | `20` | Concurrent workers |
 | `-profile` | `default` | Repeatable scan profile: `default`, `developer`, `creative`, `community`, or `full` |
@@ -72,7 +72,7 @@ If both `-tor` and `-proxy` are set, `-proxy` wins and a notice is printed.
 2. Run with `-tor`. If a SOCKS5 proxy is already responding on `127.0.0.1:9050`, that listener is reused; otherwise Social Gopher starts a temporary Tor process and stops it when the scan finishes. A non-SOCKS process on that port is an error.
 3. Or point at any proxy with `-proxy socks5h://127.0.0.1:9050` (skips process management).
 
-First bootstrap of a freshly started Tor can take ~30–60s. `socks5h` sends DNS through the proxy. Tor exits are often rate-limited or blocked by WAFs, so coverage may drop compared to a direct scan.
+First bootstrap of a freshly started Tor can take ~30–60s. Both `socks5h` and `socks5` send DNS through the proxy (curl’s `socks5h` semantics; unlike curl’s local-DNS `socks5`). Prefer `socks5h` in URLs. Tor exits are often rate-limited or blocked by WAFs, so coverage may drop compared to a direct scan.
 
 ## Site catalog
 
