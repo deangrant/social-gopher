@@ -357,8 +357,11 @@ func writeCSV(path, username string, results []scan.Result) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
-	return report.WriteCSV(f, username, results, true)
+	err = report.WriteCSV(f, username, results, true)
+	if cerr := f.Close(); err == nil {
+		err = cerr
+	}
+	return err
 }
 
 func loadCatalog(explicit string) ([]catalog.Site, error) {
