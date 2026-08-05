@@ -65,12 +65,20 @@ func New(opts Options) (*Scanner, error) {
 	if workers <= 0 {
 		workers = 20
 	}
-	return &Scanner{client: opts.Client, workers: workers, onStart: opts.OnStart}, nil
+	return &Scanner{
+		client:  opts.Client,
+		workers: workers,
+		onStart: opts.OnStart,
+	}, nil
 }
 
 // Run probes every site for username and sends results on the returned channel.
 // The channel is closed when all work finishes or ctx is cancelled.
-func (s *Scanner) Run(ctx context.Context, username string, sites []catalog.Site) <-chan Result {
+func (s *Scanner) Run(
+	ctx context.Context,
+	username string,
+	sites []catalog.Site,
+) <-chan Result {
 	out := make(chan Result)
 	jobs := make(chan catalog.Site)
 
@@ -119,7 +127,11 @@ func (s *Scanner) Run(ctx context.Context, username string, sites []catalog.Site
 }
 
 // Check probes a single site for username.
-func (s *Scanner) Check(ctx context.Context, username string, site catalog.Site) Result {
+func (s *Scanner) Check(
+	ctx context.Context,
+	username string,
+	site catalog.Site,
+) Result {
 	if s.onStart != nil {
 		s.onStart(site)
 	}
@@ -178,8 +190,15 @@ func (s *Scanner) Check(ctx context.Context, username string, site catalog.Site)
 	res.ResponseTime = time.Since(start)
 	if err != nil {
 		// HEAD is often blocked; retry GET for status checks.
-		if method == http.MethodHead && site.Check.Type == catalog.CheckStatus && ctx.Err() == nil {
-			req, reqErr := http.NewRequestWithContext(ctx, http.MethodGet, probeURL, nil)
+		if method == http.MethodHead &&
+			site.Check.Type == catalog.CheckStatus &&
+			ctx.Err() == nil {
+			req, reqErr := http.NewRequestWithContext(
+				ctx,
+				http.MethodGet,
+				probeURL,
+				nil,
+			)
 			if reqErr == nil {
 				for k, v := range site.Headers {
 					req.Header.Set(k, v)
@@ -246,8 +265,9 @@ func expandURL(tmpl, username string) string {
 	return strings.ReplaceAll(tmpl, "{username}", urlPathEscape(username))
 }
 
-// urlPathEscape escapes username for path segments without turning "/" into %2F
-// for the whole URL. Usernames should not contain slashes; we escape reserved chars.
+// urlPathEscape escapes username for path segments without
+// turning "/" into %2F for the whole URL. Usernames should not
+// contain slashes; we escape reserved chars.
 func urlPathEscape(username string) string {
 	var b strings.Builder
 	for _, r := range username {
@@ -271,7 +291,7 @@ type redirectDoer struct {
 func noRedirectClient(base Doer) Doer {
 	if c, ok := base.(*http.Client); ok {
 		clone := *c
-		clone.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		clone.CheckRedirect = func(_ *http.Request, _ []*http.Request) error {
 			return http.ErrUseLastResponse
 		}
 		return &clone

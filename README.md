@@ -154,6 +154,14 @@ internal/torrun/       Optional system Tor process lifecycle
 data/sites.json        Curated catalog (embedded)
 ```
 
+## Lint
+
+```bash
+# install: https://golangci-lint.run/docs/welcome/install/
+golangci-lint fmt ./...
+golangci-lint run ./...
+```
+
 ## Ethics
 
 Use only for lawful purposes and with permission where required. Respect site terms of service and local law. This tool is for defensive OSINT and research, not harassment or unauthorized access.

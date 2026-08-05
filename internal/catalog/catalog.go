@@ -129,7 +129,10 @@ func FilterByProfile(sites []Site, profiles []string) ([]Site, error) {
 			continue
 		}
 		if _, ok := scanProfiles[p]; !ok {
-			return nil, fmt.Errorf("profile must be one of: %s", strings.Join(Profiles, ", "))
+			return nil, fmt.Errorf(
+				"profile must be one of: %s",
+				strings.Join(Profiles, ", "),
+			)
 		}
 		if p == ProfileFull {
 			out := make([]Site, len(sites))
@@ -149,7 +152,8 @@ func FilterByProfile(sites []Site, profiles []string) ([]Site, error) {
 }
 
 // Filter returns sites matching the given options.
-// If names is non-empty, only sites whose names match (case-insensitive) are kept.
+// If names is non-empty, only sites whose names match
+// (case-insensitive) are kept.
 // NSFW sites are omitted unless includeNSFW is true.
 func Filter(sites []Site, names []string, includeNSFW bool) ([]Site, error) {
 	want := make(map[string]struct{}, len(names))

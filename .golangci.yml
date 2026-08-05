@@ -1,0 +1,43 @@
+version: "2"
+
+linters:
+  default: standard
+  enable:
+    - bodyclose
+    - errorlint
+    - gosec
+    - lll
+    - misspell
+    - nilerr
+    - noctx
+    - revive
+    - unconvert
+    - usestdlibvars
+  settings:
+    lll:
+      line-length: 80
+      tab-width: 4
+  exclusions:
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters: [lll]
+        source: "^//go:generate "
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+    - golines
+  settings:
+    golines:
+      max-len: 80
+      tab-len: 4
+      reformat-tags: false
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

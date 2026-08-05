@@ -14,15 +14,17 @@ import (
 
 func TestClassifyStatus(t *testing.T) {
 	var hit string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		hit = r.URL.Path
-		if strings.HasSuffix(r.URL.Path, "/missing") {
-			http.NotFound(w, r)
-			return
-		}
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("ok"))
-	}))
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			hit = r.URL.Path
+			if strings.HasSuffix(r.URL.Path, "/missing") {
+				http.NotFound(w, r)
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("ok"))
+		}),
+	)
 	t.Cleanup(srv.Close)
 
 	sites := []catalog.Site{
@@ -31,14 +33,20 @@ func TestClassifyStatus(t *testing.T) {
 			HomeURL:    srv.URL,
 			ProfileURL: srv.URL + "/{username}",
 			Method:     http.MethodGet,
-			Check:      catalog.Check{Type: catalog.CheckStatus, NotFoundStatus: []int{404}},
+			Check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
 		},
 		{
 			Name:       "Missing",
 			HomeURL:    srv.URL,
 			ProfileURL: srv.URL + "/{username}",
 			Method:     http.MethodGet,
-			Check:      catalog.Check{Type: catalog.CheckStatus, NotFoundStatus: []int{404}},
+			Check: catalog.Check{
+				Type:           catalog.CheckStatus,
+				NotFoundStatus: []int{404},
+			},
 		},
 	}
 
@@ -66,21 +74,26 @@ func TestClassifyStatus(t *testing.T) {
 }
 
 func TestClassifyBody(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		if strings.Contains(r.URL.Path, "gone") {
-			_, _ = w.Write([]byte("user does not exist here"))
-			return
-		}
-		_, _ = w.Write([]byte("welcome back"))
-	}))
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			if strings.Contains(r.URL.Path, "gone") {
+				_, _ = w.Write([]byte("user does not exist here"))
+				return
+			}
+			_, _ = w.Write([]byte("welcome back"))
+		}),
+	)
 	t.Cleanup(srv.Close)
 
 	site := catalog.Site{
 		Name:       "Body",
 		HomeURL:    srv.URL,
 		ProfileURL: srv.URL + "/{username}",
-		Check:      catalog.Check{Type: catalog.CheckBody, NotFoundText: []string{"does not exist"}},
+		Check: catalog.Check{
+			Type:         catalog.CheckBody,
+			NotFoundText: []string{"does not exist"},
+		},
 	}
 	sc, err := scan.New(scan.Options{Client: srv.Client(), Workers: 1})
 	if err != nil {
@@ -104,13 +117,15 @@ func TestClassifyBody(t *testing.T) {
 }
 
 func TestClassifyRedirect(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasSuffix(r.URL.Path, "/gone") {
-			http.Redirect(w, r, "/login", http.StatusFound)
-			return
-		}
-		w.WriteHeader(http.StatusOK)
-	}))
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasSuffix(r.URL.Path, "/gone") {
+				http.Redirect(w, r, "/login", http.StatusFound)
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+		}),
+	)
 	t.Cleanup(srv.Close)
 
 	site := catalog.Site{
@@ -149,13 +164,20 @@ func TestUsernamePatternInvalid(t *testing.T) {
 		HomeURL:         "https://example.com",
 		ProfileURL:      "https://example.com/{username}",
 		UsernamePattern: `^[a-z]+$`,
-		Check:           catalog.Check{Type: catalog.CheckStatus, NotFoundStatus: []int{404}},
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
 	}
 	sc, err := scan.New(scan.Options{Client: http.DefaultClient, Workers: 1})
 	if err != nil {
 		t.Fatal(err)
 	}
-	for r := range sc.Run(context.Background(), "Bad_User", []catalog.Site{site}) {
+	for r := range sc.Run(
+		context.Background(),
+		"Bad_User",
+		[]catalog.Site{site},
+	) {
 		if r.Exists != scan.Invalid {
 			t.Fatalf("exists = %v, want invalid", r.Exists)
 		}
@@ -163,9 +185,11 @@ func TestUsernamePatternInvalid(t *testing.T) {
 }
 
 func TestOnStart(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	}))
+	srv := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+			w.WriteHeader(http.StatusOK)
+		}),
+	)
 	t.Cleanup(srv.Close)
 
 	started := make(chan string, 1)
@@ -174,7 +198,10 @@ func TestOnStart(t *testing.T) {
 		HomeURL:    srv.URL,
 		ProfileURL: srv.URL + "/{username}",
 		Method:     http.MethodGet,
-		Check:      catalog.Check{Type: catalog.CheckStatus, NotFoundStatus: []int{404}},
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
 	}
 	sc, err := scan.New(scan.Options{
 		Client:  srv.Client(),
@@ -185,6 +212,7 @@ func TestOnStart(t *testing.T) {
 		t.Fatal(err)
 	}
 	for range sc.Run(context.Background(), "u", []catalog.Site{site}) {
+		continue
 	}
 	select {
 	case name := <-started:

@@ -29,20 +29,49 @@ func run(args []string) int {
 	fs.SetOutput(os.Stderr)
 
 	var (
-		csvOut          = fs.Bool("csv", false, "write found results as CSV ({username}.csv)")
-		useTor          = fs.Bool("tor", false, "use Tor (start system tor if needed)")
-		proxyURL        = fs.String("proxy", "", "proxy URL (socks5h://, socks5://, http://, https://)")
-		timeout         = fs.Duration("timeout", 20*time.Second, "per-request timeout")
-		workers         = fs.Int("workers", 20, "number of concurrent workers")
-		nsfw            = fs.Bool("nsfw", false, "include NSFW-tagged sites")
-		verbose         = fs.Bool("v", false, "print non-hits and errors")
-		catalogP        = fs.String("catalog", "", "path to sites catalog JSON (default: bundled data/sites.json)")
-		validateCatalog = fs.Bool("validate-catalog", false, "probe username_claimed/unclaimed for catalog self-tests")
+		csvOut = fs.Bool(
+			"csv",
+			false,
+			"write found results as CSV ({username}.csv)",
+		)
+		useTor = fs.Bool(
+			"tor",
+			false,
+			"use Tor (start system tor if needed)",
+		)
+		proxyURL = fs.String(
+			"proxy",
+			"",
+			"proxy URL (socks5h://, socks5://, http://, https://)",
+		)
+		timeout = fs.Duration(
+			"timeout",
+			20*time.Second,
+			"per-request timeout",
+		)
+		workers  = fs.Int("workers", 20, "number of concurrent workers")
+		nsfw     = fs.Bool("nsfw", false, "include NSFW-tagged sites")
+		verbose  = fs.Bool("v", false, "print non-hits and errors")
+		catalogP = fs.String(
+			"catalog",
+			"",
+			"path to sites catalog JSON (default: bundled data/sites.json)",
+		)
+		validateCatalog = fs.Bool(
+			"validate-catalog",
+			false,
+			"probe username_claimed/unclaimed for catalog self-tests",
+		)
 	)
 	var sites multiFlag
 	var profiles multiFlag
 	fs.Var(&sites, "site", "limit scan to site name (repeatable)")
-	fs.Var(&profiles, "profile", "scan profile: default, developer, creative, community, full (repeatable; default: default)")
+	fs.Var(
+		&profiles,
+		"profile",
+		"scan profile: default, developer, creative, community, full "+
+			"(repeatable; default: default)",
+	)
 	fs.BoolVar(verbose, "verbose", false, "print non-hits and errors")
 
 	if err := fs.Parse(args); err != nil {
@@ -51,7 +80,10 @@ func run(args []string) int {
 
 	if *validateCatalog {
 		if fs.NArg() > 0 {
-			fmt.Fprintln(os.Stderr, "usage: social-gopher -validate-catalog [flags]")
+			fmt.Fprintln(
+				os.Stderr,
+				"usage: social-gopher -validate-catalog [flags]",
+			)
 			return 2
 		}
 	} else if fs.NArg() != 1 {
@@ -76,7 +108,11 @@ func run(args []string) int {
 		return 1
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	ctx, stop := signal.NotifyContext(
+		context.Background(),
+		os.Interrupt,
+		syscall.SIGTERM,
+	)
 	defer stop()
 
 	trOpts := transport.Options{
@@ -121,7 +157,11 @@ func run(args []string) int {
 		return 2
 	}
 
-	printer := &report.Printer{Out: os.Stdout, Verbose: *verbose, Color: isTTY(os.Stdout)}
+	printer := &report.Printer{
+		Out:     os.Stdout,
+		Verbose: *verbose,
+		Color:   isTTY(os.Stdout),
+	}
 
 	scanner, err := scan.New(scan.Options{
 		Client:  tr.Client,
@@ -162,7 +202,12 @@ func run(args []string) int {
 	return 0
 }
 
-func runValidate(ctx context.Context, client scan.Doer, sites []catalog.Site, timeout time.Duration) int {
+func runValidate(
+	ctx context.Context,
+	client scan.Doer,
+	sites []catalog.Site,
+	timeout time.Duration,
+) int {
 	scanner, err := scan.New(scan.Options{Client: client, Workers: 1})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "scanner: %v\n", err)
@@ -172,7 +217,11 @@ func runValidate(ctx context.Context, client scan.Doer, sites []catalog.Site, ti
 	passed, failed, skipped := 0, 0, 0
 	for _, site := range sites {
 		if site.UsernameClaimed == "" || site.UsernameUnclaimed == "" {
-			fmt.Fprintf(os.Stdout, "SKIP %s (missing username_claimed/unclaimed)\n", site.Name)
+			fmt.Fprintf(
+				os.Stdout,
+				"SKIP %s (missing username_claimed/unclaimed)\n",
+				site.Name,
+			)
 			skipped++
 			continue
 		}
@@ -188,7 +237,13 @@ func runValidate(ctx context.Context, client scan.Doer, sites []catalog.Site, ti
 		ok := true
 		if claimed.Exists != scan.Found {
 			ok = false
-			fmt.Fprintf(os.Stdout, "FAIL %s claimed %q => %s", site.Name, site.UsernameClaimed, claimed.Exists)
+			fmt.Fprintf(
+				os.Stdout,
+				"FAIL %s claimed %q => %s",
+				site.Name,
+				site.UsernameClaimed,
+				claimed.Exists,
+			)
 			if claimed.Err != nil {
 				fmt.Fprintf(os.Stdout, " (%v)", claimed.Err)
 			}
@@ -196,7 +251,13 @@ func runValidate(ctx context.Context, client scan.Doer, sites []catalog.Site, ti
 		}
 		if unclaimed.Exists != scan.NotFound {
 			ok = false
-			fmt.Fprintf(os.Stdout, "FAIL %s unclaimed %q => %s", site.Name, site.UsernameUnclaimed, unclaimed.Exists)
+			fmt.Fprintf(
+				os.Stdout,
+				"FAIL %s unclaimed %q => %s",
+				site.Name,
+				site.UsernameUnclaimed,
+				unclaimed.Exists,
+			)
 			if unclaimed.Err != nil {
 				fmt.Fprintf(os.Stdout, " (%v)", unclaimed.Err)
 			}
@@ -214,7 +275,13 @@ func runValidate(ctx context.Context, client scan.Doer, sites []catalog.Site, ti
 		}
 	}
 
-	fmt.Fprintf(os.Stdout, "\nvalidate: %d passed, %d failed, %d skipped\n", passed, failed, skipped)
+	fmt.Fprintf(
+		os.Stdout,
+		"\nvalidate: %d passed, %d failed, %d skipped\n",
+		passed,
+		failed,
+		skipped,
+	)
 	if failed > 0 {
 		return 1
 	}

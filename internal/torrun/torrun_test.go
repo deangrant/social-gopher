@@ -11,7 +11,11 @@ import (
 )
 
 func TestEnsureReusesExistingListener(t *testing.T) {
-	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	ln, err := (&net.ListenConfig{}).Listen(
+		context.Background(),
+		"tcp",
+		"127.0.0.1:0",
+	)
 	if err != nil {
 		t.Fatalf("Listen: %v", err)
 	}
@@ -43,7 +47,11 @@ func TestEnsureReusesExistingListener(t *testing.T) {
 }
 
 func TestCloseNoopWhenNotStartedByUs(t *testing.T) {
-	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	ln, err := (&net.ListenConfig{}).Listen(
+		context.Background(),
+		"tcp",
+		"127.0.0.1:0",
+	)
 	if err != nil {
 		t.Fatalf("Listen: %v", err)
 	}
@@ -64,7 +72,11 @@ func TestCloseNoopWhenNotStartedByUs(t *testing.T) {
 }
 
 func TestEnsureMissingBinary(t *testing.T) {
-	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	ln, err := (&net.ListenConfig{}).Listen(
+		context.Background(),
+		"tcp",
+		"127.0.0.1:0",
+	)
 	if err != nil {
 		t.Fatalf("Listen: %v", err)
 	}

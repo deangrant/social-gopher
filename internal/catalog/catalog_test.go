@@ -44,7 +44,11 @@ func TestLoadValid(t *testing.T) {
 		t.Fatalf("default not_found_status = %v, want [404]", got)
 	}
 	if sites[0].Profile != catalog.ProfileDefault {
-		t.Fatalf("profile = %q, want %q", sites[0].Profile, catalog.ProfileDefault)
+		t.Fatalf(
+			"profile = %q, want %q",
+			sites[0].Profile,
+			catalog.ProfileDefault,
+		)
 	}
 }
 
@@ -85,8 +89,20 @@ func TestLoadRejectsInvalid(t *testing.T) {
 			name: "duplicate names",
 			src: `{
 				"sites":[
-					{"name":"X","home_url":"https://x.test","profile_url":"https://x.test/{username}","check":{"type":"status"},"profile":"default"},
-					{"name":"x","home_url":"https://y.test","profile_url":"https://y.test/{username}","check":{"type":"status"},"profile":"default"}
+					{
+						"name":"X",
+						"home_url":"https://x.test",
+						"profile_url":"https://x.test/{username}",
+						"check":{"type":"status"},
+						"profile":"default"
+					},
+					{
+						"name":"x",
+						"home_url":"https://y.test",
+						"profile_url":"https://y.test/{username}",
+						"check":{"type":"status"},
+						"profile":"default"
+					}
 				]
 			}`,
 		},
@@ -163,12 +179,36 @@ func TestFilterByProfile(t *testing.T) {
 		want     []string
 	}{
 		{"default", []string{catalog.ProfileDefault}, []string{"Seed"}},
-		{"developer", []string{catalog.ProfileDeveloper}, []string{"Seed", "Dev"}},
-		{"creative", []string{catalog.ProfileCreative}, []string{"Seed", "Create"}},
-		{"community", []string{catalog.ProfileCommunity}, []string{"Seed", "Comm"}},
-		{"developer+community", []string{catalog.ProfileDeveloper, catalog.ProfileCommunity}, []string{"Seed", "Dev", "Comm"}},
-		{"full", []string{catalog.ProfileFull}, []string{"Seed", "Dev", "Create", "Comm"}},
-		{"full with sibling", []string{catalog.ProfileDeveloper, catalog.ProfileFull}, []string{"Seed", "Dev", "Create", "Comm"}},
+		{
+			"developer",
+			[]string{catalog.ProfileDeveloper},
+			[]string{"Seed", "Dev"},
+		},
+		{
+			"creative",
+			[]string{catalog.ProfileCreative},
+			[]string{"Seed", "Create"},
+		},
+		{
+			"community",
+			[]string{catalog.ProfileCommunity},
+			[]string{"Seed", "Comm"},
+		},
+		{
+			"developer+community",
+			[]string{catalog.ProfileDeveloper, catalog.ProfileCommunity},
+			[]string{"Seed", "Dev", "Comm"},
+		},
+		{
+			"full",
+			[]string{catalog.ProfileFull},
+			[]string{"Seed", "Dev", "Create", "Comm"},
+		},
+		{
+			"full with sibling",
+			[]string{catalog.ProfileDeveloper, catalog.ProfileFull},
+			[]string{"Seed", "Dev", "Create", "Comm"},
+		},
 		{"empty", nil, []string{"Seed"}},
 	}
 	for _, tt := range tests {
@@ -178,7 +218,12 @@ func TestFilterByProfile(t *testing.T) {
 				t.Fatalf("FilterByProfile(%v) error = %v", tt.profiles, err)
 			}
 			if len(got) != len(tt.want) {
-				t.Fatalf("len = %d, want %d (%v)", len(got), len(tt.want), names(got))
+				t.Fatalf(
+					"len = %d, want %d (%v)",
+					len(got),
+					len(tt.want),
+					names(got),
+				)
 			}
 			for i, name := range tt.want {
 				if got[i].Name != name {
@@ -217,7 +262,8 @@ func TestLoadSelfTestFields(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	if sites[0].UsernameClaimed != "alice" || sites[0].UsernameUnclaimed != "zznobody999" {
+	if sites[0].UsernameClaimed != "alice" ||
+		sites[0].UsernameUnclaimed != "zznobody999" {
 		t.Fatalf("self-test fields = %+v", sites[0])
 	}
 }
@@ -268,10 +314,17 @@ func TestLoadSeedFile(t *testing.T) {
 		t.Fatalf("FilterByProfile(nil) error = %v", err)
 	}
 	if len(def) != counts[catalog.ProfileDefault] {
-		t.Fatalf("default filter = %d, want %d", len(def), counts[catalog.ProfileDefault])
+		t.Fatalf(
+			"default filter = %d, want %d",
+			len(def),
+			counts[catalog.ProfileDefault],
+		)
 	}
 
-	dev, err := catalog.FilterByProfile(sites, []string{catalog.ProfileDeveloper})
+	dev, err := catalog.FilterByProfile(
+		sites,
+		[]string{catalog.ProfileDeveloper},
+	)
 	if err != nil {
 		t.Fatalf("FilterByProfile(developer) error = %v", err)
 	}

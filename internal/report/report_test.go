@@ -15,14 +15,20 @@ import (
 func TestWriteCSV(t *testing.T) {
 	results := []scan.Result{
 		{
-			Site:         catalog.Site{Name: "GitHub", HomeURL: "https://github.com"},
+			Site: catalog.Site{
+				Name:    "GitHub",
+				HomeURL: "https://github.com",
+			},
 			ProfileURL:   "https://github.com/octocat",
 			Exists:       scan.Found,
 			HTTPStatus:   200,
 			ResponseTime: 1500 * time.Millisecond,
 		},
 		{
-			Site:       catalog.Site{Name: "Missing", HomeURL: "https://m.test"},
+			Site: catalog.Site{
+				Name:    "Missing",
+				HomeURL: "https://m.test",
+			},
 			ProfileURL: "https://m.test/x",
 			Exists:     scan.NotFound,
 			HTTPStatus: 404,
@@ -34,9 +40,16 @@ func TestWriteCSV(t *testing.T) {
 	}
 	lines := strings.Split(strings.TrimSpace(buf.String()), "\n")
 	if len(lines) != 2 {
-		t.Fatalf("lines = %d, want 2 (header + found only)\n%s", len(lines), buf.String())
+		t.Fatalf(
+			"lines = %d, want 2 (header + found only)\n%s",
+			len(lines),
+			buf.String(),
+		)
 	}
-	if !strings.Contains(lines[0], "username,name,home_url,profile_url,exists,http_status,response_time_s") {
+	if !strings.Contains(
+		lines[0],
+		"username,name,home_url,profile_url,exists,http_status,response_time_s",
+	) {
 		t.Fatalf("header = %q", lines[0])
 	}
 	if !strings.Contains(lines[1], "octocat,GitHub,") {
@@ -104,7 +117,10 @@ func TestPrinterColorOnFoundLine(t *testing.T) {
 	})
 	p.Summary(1, 1, time.Second)
 	out := buf.String()
-	if !strings.Contains(out, "\033[32m[+] Instagram:\033[0m https://instagram.com/x") {
+	if !strings.Contains(
+		out,
+		"\033[32m[+] Instagram:\033[0m https://instagram.com/x",
+	) {
 		t.Fatalf("found line = %q, want green label", out)
 	}
 }

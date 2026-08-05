@@ -35,7 +35,8 @@ func New(opts Options) (Result, error) {
 		opts.Timeout = 20 * time.Second
 	}
 	if opts.UserAgent == "" {
-		opts.UserAgent = "social-gopher/1.0 (+https://github.com/deangrant/social-gopher)"
+		opts.UserAgent = "social-gopher/1.0 " +
+			"(+https://github.com/deangrant/social-gopher)"
 	}
 
 	proxyURL, notice := resolveProxy(opts)
@@ -71,12 +72,13 @@ func New(opts Options) (Result, error) {
 			if err != nil {
 				return Result{}, fmt.Errorf("socks5 dialer: %w", err)
 			}
-			if cd, ok := dialer.(proxy.ContextDialer); ok {
-				transport.DialContext = cd.DialContext
-			} else {
-				transport.DialContext = nil
-				transport.Dial = dialer.Dial
+			cd, ok := dialer.(proxy.ContextDialer)
+			if !ok {
+				return Result{}, fmt.Errorf(
+					"socks5 dialer does not support DialContext",
+				)
 			}
+			transport.DialContext = cd.DialContext
 			transport.Proxy = nil
 		case "http", "https":
 			transport.Proxy = http.ProxyURL(u)

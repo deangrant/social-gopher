@@ -1,4 +1,5 @@
-// Package report formats probe results for the terminal and optional CSV export.
+// Package report formats probe results for the terminal and
+// optional CSV export.
 package report
 
 import (
@@ -79,12 +80,21 @@ func (p *Printer) Result(r scan.Result) {
 	case scan.Invalid:
 		if p.Verbose {
 			p.clearStatusLocked()
-			fmt.Fprintf(p.Out, "[-] %s: username invalid for site\n", r.Site.Name)
+			fmt.Fprintf(
+				p.Out,
+				"[-] %s: username invalid for site\n",
+				r.Site.Name,
+			)
 		}
 	case scan.Unknown:
 		if p.Verbose {
 			p.clearStatusLocked()
-			fmt.Fprintf(p.Out, "[?] %s: unknown (HTTP %d)\n", r.Site.Name, r.HTTPStatus)
+			fmt.Fprintf(
+				p.Out,
+				"[?] %s: unknown (HTTP %d)\n",
+				r.Site.Name,
+				r.HTTPStatus,
+			)
 		}
 	case scan.ErrorState:
 		if p.Verbose {
@@ -113,13 +123,26 @@ func (p *Printer) Summary(found, total int, elapsed time.Duration) {
 
 	p.clearStatusLocked()
 	p.stopSpinnerLocked()
-	fmt.Fprintf(p.Out, "\nFound %d/%d profiles in %s\n", found, total, elapsed.Round(time.Millisecond))
+	fmt.Fprintf(
+		p.Out,
+		"\nFound %d/%d profiles in %s\n",
+		found,
+		total,
+		elapsed.Round(time.Millisecond),
+	)
 }
 
 func (p *Printer) printFoundLocked(name, profileURL string) {
 	label := fmt.Sprintf("[+] %s:", name)
 	if p.Color {
-		fmt.Fprintf(p.Out, "%s%s%s %s\n", ansiGreen, label, ansiReset, profileURL)
+		fmt.Fprintf(
+			p.Out,
+			"%s%s%s %s\n",
+			ansiGreen,
+			label,
+			ansiReset,
+			profileURL,
+		)
 		return
 	}
 	fmt.Fprintf(p.Out, "%s %s\n", label, profileURL)
@@ -208,7 +231,12 @@ func anyInflight(m map[string]struct{}) string {
 }
 
 // WriteCSV writes all results (or only found, if foundOnly) as CSV.
-func WriteCSV(w io.Writer, username string, results []scan.Result, foundOnly bool) error {
+func WriteCSV(
+	w io.Writer,
+	username string,
+	results []scan.Result,
+	foundOnly bool,
+) error {
 	cw := csv.NewWriter(w)
 	header := []string{
 		"username",
@@ -244,5 +272,8 @@ func WriteCSV(w io.Writer, username string, results []scan.Result, foundOnly boo
 }
 
 func formatSeconds(d time.Duration) string {
-	return strings.TrimRight(strings.TrimRight(fmt.Sprintf("%.3f", d.Seconds()), "0"), ".")
+	return strings.TrimRight(
+		strings.TrimRight(fmt.Sprintf("%.3f", d.Seconds()), "0"),
+		".",
+	)
 }

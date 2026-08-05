@@ -86,7 +86,7 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 		opts.StartupTimeout = defaultStartupTimeout
 	}
 
-	if socksReady(opts.SocksAddr) {
+	if socksReady(ctx, opts.SocksAddr) {
 		return &Instance{addr: opts.SocksAddr}, nil
 	}
 
@@ -94,7 +94,11 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 	if binary == "" {
 		path, err := exec.LookPath("tor")
 		if err != nil {
-			return nil, fmt.Errorf("tor not found on PATH; install Tor (e.g. apt install tor) or start it so %s is listening", opts.SocksAddr)
+			return nil, fmt.Errorf(
+				"tor not found on PATH; install Tor "+
+					"(e.g. apt install tor) or start it so %s is listening",
+				opts.SocksAddr,
+			)
 		}
 		binary = path
 	}
@@ -104,7 +108,8 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 		return nil, fmt.Errorf("tor data directory: %w", err)
 	}
 
-	cmd := exec.Command(binary,
+	// Process lifetime is owned by Instance.Close, not Ensure's ctx.
+	cmd := exec.CommandContext(context.WithoutCancel(ctx), binary,
 		"--SocksPort", opts.SocksAddr,
 		"--DataDirectory", dataDir,
 		"--IgnoreMissingTorrc", "1",
@@ -137,11 +142,15 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 			_ = os.RemoveAll(dataDir)
 			detail := stderr.String()
 			if detail != "" {
-				return nil, fmt.Errorf("tor exited before SOCKS was ready: %w (%s)", err, detail)
+				return nil, fmt.Errorf(
+					"tor exited before SOCKS was ready: %w (%s)",
+					err,
+					detail,
+				)
 			}
 			return nil, fmt.Errorf("tor exited before SOCKS was ready: %w", err)
 		case <-ticker.C:
-			if socksReady(opts.SocksAddr) {
+			if socksReady(ctx, opts.SocksAddr) {
 				return &Instance{
 					addr:        opts.SocksAddr,
 					cmd:         cmd,
@@ -154,14 +163,18 @@ func Ensure(ctx context.Context, opts Options) (*Instance, error) {
 				_ = killCmd(cmd)
 				<-waitCh
 				_ = os.RemoveAll(dataDir)
-				return nil, fmt.Errorf("timed out waiting for Tor SOCKS on %s", opts.SocksAddr)
+				return nil, fmt.Errorf(
+					"timed out waiting for Tor SOCKS on %s",
+					opts.SocksAddr,
+				)
 			}
 		}
 	}
 }
 
-func socksReady(addr string) bool {
-	c, err := net.DialTimeout("tcp", addr, 200*time.Millisecond)
+func socksReady(ctx context.Context, addr string) bool {
+	d := net.Dialer{Timeout: 200 * time.Millisecond}
+	c, err := d.DialContext(ctx, "tcp", addr)
 	if err != nil {
 		return false
 	}
@@ -184,9 +197,9 @@ type bufLimited struct {
 }
 
 func (b *bufLimited) Write(p []byte) (int, error) {
-	const max = 2048
-	if len(b.b) < max {
-		need := max - len(b.b)
+	const limit = 2048
+	if len(b.b) < limit {
+		need := limit - len(b.b)
 		if need > len(p) {
 			need = len(p)
 		}
