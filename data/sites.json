@@ -1,0 +1,5483 @@
+{
+  "sites": [
+    {
+      "name": "GitHub",
+      "home_url": "https://github.com",
+      "profile_url": "https://github.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_pattern": "^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$",
+      "username_claimed": "torvalds",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "GitLab",
+      "home_url": "https://gitlab.com",
+      "profile_url": "https://gitlab.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Bitbucket",
+      "home_url": "https://bitbucket.org",
+      "profile_url": "https://bitbucket.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Codeberg",
+      "home_url": "https://codeberg.org",
+      "profile_url": "https://codeberg.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "Codeberg",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "SourceHut",
+      "home_url": "https://sr.ht",
+      "profile_url": "https://sr.ht/~{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "sircmpwn",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Gitea",
+      "home_url": "https://gitea.com",
+      "profile_url": "https://gitea.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "gitea",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "developer"
+    },
+    {
+      "name": "GitHub Gists",
+      "home_url": "https://gist.github.com",
+      "profile_url": "https://gist.github.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "torvalds",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "developer"
+    },
+    {
+      "name": "Reddit",
+      "home_url": "https://www.reddit.com",
+      "profile_url": "https://www.reddit.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://www.reddit.com/user/{username}/about.json",
+      "headers": {
+        "User-Agent": "social-gopher/1.0"
+      },
+      "profile": "default"
+    },
+    {
+      "name": "HackerNews",
+      "home_url": "https://news.ycombinator.com",
+      "profile_url": "https://news.ycombinator.com/user?id={username}",
+      "check": {
+        "type": "body",
+        "not_found_text": [
+          "No such user"
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Dev.to",
+      "home_url": "https://dev.to",
+      "profile_url": "https://dev.to/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "ben",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Hashnode",
+      "home_url": "https://hashnode.com",
+      "profile_url": "https://hashnode.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Medium",
+      "home_url": "https://medium.com",
+      "profile_url": "https://medium.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Keybase",
+      "home_url": "https://keybase.io",
+      "profile_url": "https://keybase.io/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "max",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Lobsters",
+      "home_url": "https://lobste.rs",
+      "profile_url": "https://lobste.rs/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Slashdot",
+      "home_url": "https://slashdot.org",
+      "profile_url": "https://slashdot.org/~{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "CmdrTaco",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "Docker Hub",
+      "home_url": "https://hub.docker.com",
+      "profile_url": "https://hub.docker.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://hub.docker.com/v2/users/{username}/",
+      "username_claimed": "library",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "npm",
+      "home_url": "https://www.npmjs.com",
+      "profile_url": "https://www.npmjs.com/~{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "PyPI",
+      "home_url": "https://pypi.org",
+      "profile_url": "https://pypi.org/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "RubyGems",
+      "home_url": "https://rubygems.org",
+      "profile_url": "https://rubygems.org/profiles/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "qrush",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "crates.io",
+      "home_url": "https://crates.io",
+      "profile_url": "https://crates.io/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Packagist",
+      "home_url": "https://packagist.org",
+      "profile_url": "https://packagist.org/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "stof",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "NuGet",
+      "home_url": "https://www.nuget.org",
+      "profile_url": "https://www.nuget.org/profiles/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Hex.pm",
+      "home_url": "https://hex.pm",
+      "profile_url": "https://hex.pm/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "josevalim",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "developer"
+    },
+    {
+      "name": "Hugging Face",
+      "home_url": "https://huggingface.co",
+      "profile_url": "https://huggingface.co/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "huggingface",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Kaggle",
+      "home_url": "https://www.kaggle.com",
+      "profile_url": "https://www.kaggle.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Replit",
+      "home_url": "https://replit.com",
+      "profile_url": "https://replit.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "CodePen",
+      "home_url": "https://codepen.io",
+      "profile_url": "https://codepen.io/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "JSFiddle",
+      "home_url": "https://jsfiddle.net",
+      "profile_url": "https://jsfiddle.net/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Glitch",
+      "home_url": "https://glitch.com",
+      "profile_url": "https://glitch.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Observable",
+      "home_url": "https://observablehq.com",
+      "profile_url": "https://observablehq.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "CodeSandbox",
+      "home_url": "https://codesandbox.io",
+      "profile_url": "https://codesandbox.io/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "SourceForge",
+      "home_url": "https://sourceforge.net",
+      "profile_url": "https://sourceforge.net/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Launchpad",
+      "home_url": "https://launchpad.net",
+      "profile_url": "https://launchpad.net/~{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Savannah",
+      "home_url": "https://savannah.gnu.org",
+      "profile_url": "https://savannah.gnu.org/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "OpenHub",
+      "home_url": "https://openhub.net",
+      "profile_url": "https://openhub.net/accounts/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "HackerOne",
+      "home_url": "https://hackerone.com",
+      "profile_url": "https://hackerone.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "security",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Bugcrowd",
+      "home_url": "https://bugcrowd.com",
+      "profile_url": "https://bugcrowd.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "TryHackMe",
+      "home_url": "https://tryhackme.com",
+      "profile_url": "https://tryhackme.com/p/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "HackTheBox",
+      "home_url": "https://app.hackthebox.com",
+      "profile_url": "https://app.hackthebox.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "CTFtime",
+      "home_url": "https://ctftime.org",
+      "profile_url": "https://ctftime.org/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Root-Me",
+      "home_url": "https://www.root-me.org",
+      "profile_url": "https://www.root-me.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "ProductHunt",
+      "home_url": "https://www.producthunt.com",
+      "profile_url": "https://www.producthunt.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "rrhoover",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Indie Hackers",
+      "home_url": "https://www.indiehackers.com",
+      "profile_url": "https://www.indiehackers.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "DevRant",
+      "home_url": "https://devrant.com",
+      "profile_url": "https://devrant.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "FreeCodeCamp Forum",
+      "home_url": "https://forum.freecodecamp.org",
+      "profile_url": "https://forum.freecodecamp.org/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "QuincyLarson",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "Discourse Meta",
+      "home_url": "https://meta.discourse.org",
+      "profile_url": "https://meta.discourse.org/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "sam",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "Wikipedia",
+      "home_url": "https://en.wikipedia.org",
+      "profile_url": "https://en.wikipedia.org/wiki/User:{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "Jimbo_Wales",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "Wikimedia Commons",
+      "home_url": "https://commons.wikimedia.org",
+      "profile_url": "https://commons.wikimedia.org/wiki/User:{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "ArchWiki",
+      "home_url": "https://wiki.archlinux.org",
+      "profile_url": "https://wiki.archlinux.org/title/User:{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Gentoo Wiki",
+      "home_url": "https://wiki.gentoo.org",
+      "profile_url": "https://wiki.gentoo.org/wiki/User:{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "AUR",
+      "home_url": "https://aur.archlinux.org",
+      "profile_url": "https://aur.archlinux.org/account/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Gradle Plugins",
+      "home_url": "https://plugins.gradle.org",
+      "profile_url": "https://plugins.gradle.org/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Anaconda",
+      "home_url": "https://anaconda.org",
+      "profile_url": "https://anaconda.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Julia Packages",
+      "home_url": "https://juliahub.com",
+      "profile_url": "https://juliahub.com/ui/Users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "OPAM",
+      "home_url": "https://ocaml.org",
+      "profile_url": "https://ocaml.org/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Hackage",
+      "home_url": "https://hackage.haskell.org",
+      "profile_url": "https://hackage.haskell.org/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "EdwardKmett",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "developer"
+    },
+    {
+      "name": "CPAN",
+      "home_url": "https://metacpan.org",
+      "profile_url": "https://metacpan.org/author/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "PECL",
+      "home_url": "https://pecl.php.net",
+      "profile_url": "https://pecl.php.net/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Ruby Toolbox",
+      "home_url": "https://www.ruby-toolbox.com",
+      "profile_url": "https://www.ruby-toolbox.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Libraries.io",
+      "home_url": "https://libraries.io",
+      "profile_url": "https://libraries.io/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Planet Debian",
+      "home_url": "https://people.debian.org",
+      "profile_url": "https://people.debian.org/~{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "GitLab Pages user",
+      "home_url": "https://gitlab.io",
+      "profile_url": "https://{username}.gitlab.io",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "GitHub Pages user",
+      "home_url": "https://github.io",
+      "profile_url": "https://{username}.github.io",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Bitbucket Pages",
+      "home_url": "https://bitbucket.io",
+      "profile_url": "https://{username}.bitbucket.io",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "SourceHut pages",
+      "home_url": "https://srht.site",
+      "profile_url": "https://{username}.srht.site",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "NotABug",
+      "home_url": "https://notabug.org",
+      "profile_url": "https://notabug.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Framagit",
+      "home_url": "https://framagit.org",
+      "profile_url": "https://framagit.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Disroot Git",
+      "home_url": "https://git.disroot.org",
+      "profile_url": "https://git.disroot.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Codeberg Pages",
+      "home_url": "https://codeberg.page",
+      "profile_url": "https://{username}.codeberg.page",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Pagure.io",
+      "home_url": "https://pagure.io",
+      "profile_url": "https://pagure.io/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "OpenSUSE Build Service",
+      "home_url": "https://build.opensuse.org",
+      "profile_url": "https://build.opensuse.org/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Repology",
+      "home_url": "https://repology.org",
+      "profile_url": "https://repology.org/maintainer/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Freshports",
+      "home_url": "https://www.freshports.org",
+      "profile_url": "https://www.freshports.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "About.me",
+      "home_url": "https://about.me",
+      "profile_url": "https://about.me/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "about",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Linktree",
+      "home_url": "https://linktr.ee",
+      "profile_url": "https://linktr.ee/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "linktree",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Carrd",
+      "home_url": "https://carrd.co",
+      "profile_url": "https://{username}.carrd.co",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "TikTok",
+      "home_url": "https://www.tiktok.com",
+      "profile_url": "https://www.tiktok.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Instagram",
+      "home_url": "https://www.instagram.com",
+      "profile_url": "https://www.instagram.com/{username}",
+      "check": {
+        "type": "body",
+        "not_found_text": [
+          "Sorry, this page isn't available",
+          "page isn't available"
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Pinterest",
+      "home_url": "https://www.pinterest.com",
+      "profile_url": "https://www.pinterest.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Tumblr",
+      "home_url": "https://www.tumblr.com",
+      "profile_url": "https://{username}.tumblr.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Flickr",
+      "home_url": "https://www.flickr.com",
+      "profile_url": "https://www.flickr.com/people/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "SoundCloud",
+      "home_url": "https://soundcloud.com",
+      "profile_url": "https://soundcloud.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "soundcloud",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Spotify",
+      "home_url": "https://open.spotify.com",
+      "profile_url": "https://open.spotify.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Twitch",
+      "home_url": "https://www.twitch.tv",
+      "profile_url": "https://www.twitch.tv/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "YouTube",
+      "home_url": "https://www.youtube.com",
+      "profile_url": "https://www.youtube.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "YouTube",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Vimeo",
+      "home_url": "https://vimeo.com",
+      "profile_url": "https://vimeo.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Dribbble",
+      "home_url": "https://dribbble.com",
+      "profile_url": "https://dribbble.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "simplebits",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Behance",
+      "home_url": "https://www.behance.net",
+      "profile_url": "https://www.behance.net/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "DeviantArt",
+      "home_url": "https://www.deviantart.com",
+      "profile_url": "https://www.deviantart.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "ArtStation",
+      "home_url": "https://www.artstation.com",
+      "profile_url": "https://www.artstation.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Steam",
+      "home_url": "https://steamcommunity.com",
+      "profile_url": "https://steamcommunity.com/id/{username}",
+      "check": {
+        "type": "body",
+        "not_found_text": [
+          "The specified profile could not be found",
+          "could not be found"
+        ]
+      },
+      "username_claimed": "gabelogannewell",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Roblox",
+      "home_url": "https://www.roblox.com",
+      "profile_url": "https://www.roblox.com/users/profile?username={username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Chess.com",
+      "home_url": "https://www.chess.com",
+      "profile_url": "https://www.chess.com/member/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "Hikaru",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Lichess",
+      "home_url": "https://lichess.org",
+      "profile_url": "https://lichess.org/@/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "thibault",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "SlideShare",
+      "home_url": "https://www.slideshare.net",
+      "profile_url": "https://www.slideshare.net/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Issuu",
+      "home_url": "https://issuu.com",
+      "profile_url": "https://issuu.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Telegram",
+      "home_url": "https://t.me",
+      "profile_url": "https://t.me/{username}",
+      "check": {
+        "type": "body",
+        "not_found_text": [
+          "If you have <strong>Telegram</strong>, you can contact"
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Venmo",
+      "home_url": "https://venmo.com",
+      "profile_url": "https://venmo.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Cash App",
+      "home_url": "https://cash.app",
+      "profile_url": "https://cash.app/${username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Patreon",
+      "home_url": "https://www.patreon.com",
+      "profile_url": "https://www.patreon.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Buy Me a Coffee",
+      "home_url": "https://www.buymeacoffee.com",
+      "profile_url": "https://www.buymeacoffee.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Ko-fi",
+      "home_url": "https://ko-fi.com",
+      "profile_url": "https://ko-fi.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Mastodon.social",
+      "home_url": "https://mastodon.social",
+      "profile_url": "https://mastodon.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.social/api/v1/accounts/lookup?acct={username}",
+      "username_claimed": "Gargron",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Bluesky",
+      "home_url": "https://bsky.app",
+      "profile_url": "https://bsky.app/profile/{username}.bsky.social",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          400,
+          404
+        ]
+      },
+      "probe_url": "https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor={username}.bsky.social",
+      "username_claimed": "jay",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "default"
+    },
+    {
+      "name": "Threads",
+      "home_url": "https://www.threads.net",
+      "profile_url": "https://www.threads.net/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Snapchat",
+      "home_url": "https://www.snapchat.com",
+      "profile_url": "https://www.snapchat.com/add/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "default"
+    },
+    {
+      "name": "Letterboxd",
+      "home_url": "https://letterboxd.com",
+      "profile_url": "https://letterboxd.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Goodreads",
+      "home_url": "https://www.goodreads.com",
+      "profile_url": "https://www.goodreads.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Last.fm",
+      "home_url": "https://www.last.fm",
+      "profile_url": "https://www.last.fm/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Bandcamp",
+      "home_url": "https://bandcamp.com",
+      "profile_url": "https://bandcamp.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Mixcloud",
+      "home_url": "https://www.mixcloud.com",
+      "profile_url": "https://www.mixcloud.com/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Discogs",
+      "home_url": "https://www.discogs.com",
+      "profile_url": "https://www.discogs.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "MyAnimeList",
+      "home_url": "https://myanimelist.net",
+      "profile_url": "https://myanimelist.net/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "AniList",
+      "home_url": "https://anilist.co",
+      "profile_url": "https://anilist.co/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Trakt",
+      "home_url": "https://trakt.tv",
+      "profile_url": "https://trakt.tv/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "IMDb",
+      "home_url": "https://www.imdb.com",
+      "profile_url": "https://www.imdb.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "VSCO",
+      "home_url": "https://vsco.co",
+      "profile_url": "https://vsco.co/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "500px",
+      "home_url": "https://500px.com",
+      "profile_url": "https://500px.com/p/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Unsplash",
+      "home_url": "https://unsplash.com",
+      "profile_url": "https://unsplash.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Pexels",
+      "home_url": "https://www.pexels.com",
+      "profile_url": "https://www.pexels.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Giphy",
+      "home_url": "https://giphy.com",
+      "profile_url": "https://giphy.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Tenor",
+      "home_url": "https://tenor.com",
+      "profile_url": "https://tenor.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Imgur",
+      "home_url": "https://imgur.com",
+      "profile_url": "https://imgur.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Flickr Commons",
+      "home_url": "https://www.flickr.com",
+      "profile_url": "https://www.flickr.com/photos/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "GeoGuessr",
+      "home_url": "https://www.geoguessr.com",
+      "profile_url": "https://www.geoguessr.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Duolingo",
+      "home_url": "https://www.duolingo.com",
+      "profile_url": "https://www.duolingo.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Khan Academy",
+      "home_url": "https://www.khanacademy.org",
+      "profile_url": "https://www.khanacademy.org/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Codecademy",
+      "home_url": "https://www.codecademy.com",
+      "profile_url": "https://www.codecademy.com/profiles/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "LeetCode",
+      "home_url": "https://leetcode.com",
+      "profile_url": "https://leetcode.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "HackerRank",
+      "home_url": "https://www.hackerrank.com",
+      "profile_url": "https://www.hackerrank.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Codeforces",
+      "home_url": "https://codeforces.com",
+      "profile_url": "https://codeforces.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "AtCoder",
+      "home_url": "https://atcoder.jp",
+      "profile_url": "https://atcoder.jp/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "TopCoder",
+      "home_url": "https://www.topcoder.com",
+      "profile_url": "https://www.topcoder.com/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Codewars",
+      "home_url": "https://www.codewars.com",
+      "profile_url": "https://www.codewars.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Exercism",
+      "home_url": "https://exercism.org",
+      "profile_url": "https://exercism.org/profiles/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "iHiD",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "developer"
+    },
+    {
+      "name": "SPOJ",
+      "home_url": "https://www.spoj.com",
+      "profile_url": "https://www.spoj.com/users/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Speedrun.com",
+      "home_url": "https://www.speedrun.com",
+      "profile_url": "https://www.speedrun.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Itch.io",
+      "home_url": "https://itch.io",
+      "profile_url": "https://itch.io/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "GameJolt",
+      "home_url": "https://gamejolt.com",
+      "profile_url": "https://gamejolt.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "ModDB",
+      "home_url": "https://www.moddb.com",
+      "profile_url": "https://www.moddb.com/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "IndieDB",
+      "home_url": "https://www.indiedb.com",
+      "profile_url": "https://www.indiedb.com/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "CurseForge",
+      "home_url": "https://www.curseforge.com",
+      "profile_url": "https://www.curseforge.com/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Modrinth",
+      "home_url": "https://modrinth.com",
+      "profile_url": "https://modrinth.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Nexus Mods",
+      "home_url": "https://www.nexusmods.com",
+      "profile_url": "https://www.nexusmods.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Gitee",
+      "home_url": "https://gitee.com",
+      "profile_url": "https://gitee.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "OSChina",
+      "home_url": "https://my.oschina.net",
+      "profile_url": "https://my.oschina.net/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "CSDN",
+      "home_url": "https://blog.csdn.net",
+      "profile_url": "https://blog.csdn.net/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Juejin",
+      "home_url": "https://juejin.cn",
+      "profile_url": "https://juejin.cn/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "SegmentFault",
+      "home_url": "https://segmentfault.com",
+      "profile_url": "https://segmentfault.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "V2EX",
+      "home_url": "https://www.v2ex.com",
+      "profile_url": "https://www.v2ex.com/member/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Zhihu",
+      "home_url": "https://www.zhihu.com",
+      "profile_url": "https://www.zhihu.com/people/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Douban",
+      "home_url": "https://www.douban.com",
+      "profile_url": "https://www.douban.com/people/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Weibo",
+      "home_url": "https://weibo.com",
+      "profile_url": "https://weibo.com/n/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Pixiv",
+      "home_url": "https://www.pixiv.net",
+      "profile_url": "https://www.pixiv.net/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Niconico",
+      "home_url": "https://www.nicovideo.jp",
+      "profile_url": "https://www.nicovideo.jp/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Qiita",
+      "home_url": "https://qiita.com",
+      "profile_url": "https://qiita.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "Yaegaki",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "Zenn",
+      "home_url": "https://zenn.dev",
+      "profile_url": "https://zenn.dev/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "catnose99",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "Note.com",
+      "home_url": "https://note.com",
+      "profile_url": "https://note.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Hatena Blog",
+      "home_url": "https://hatenablog.com",
+      "profile_url": "https://{username}.hatenablog.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Speaker Deck",
+      "home_url": "https://speakerdeck.com",
+      "profile_url": "https://speakerdeck.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "tenderlove",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "Scribd",
+      "home_url": "https://www.scribd.com",
+      "profile_url": "https://www.scribd.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Keyoxide",
+      "home_url": "https://keyoxide.org",
+      "profile_url": "https://keyoxide.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Pastebin",
+      "home_url": "https://pastebin.com",
+      "profile_url": "https://pastebin.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "guest",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "developer"
+    },
+    {
+      "name": "Gravatar",
+      "home_url": "https://gravatar.com",
+      "profile_url": "https://gravatar.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "beau",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "developer"
+    },
+    {
+      "name": "WordPress.com",
+      "home_url": "https://wordpress.com",
+      "profile_url": "https://{username}.wordpress.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Blogger",
+      "home_url": "https://www.blogger.com",
+      "profile_url": "https://www.blogger.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Substack",
+      "home_url": "https://substack.com",
+      "profile_url": "https://substack.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Write.as",
+      "home_url": "https://write.as",
+      "profile_url": "https://write.as/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Mirror.xyz",
+      "home_url": "https://mirror.xyz",
+      "profile_url": "https://mirror.xyz/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "developer"
+    },
+    {
+      "name": "Community HackerNoon",
+      "home_url": "https://hackernoon.com",
+      "profile_url": "https://hackernoon.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Adobe Portfolio",
+      "home_url": "https://portfolio.adobe.com",
+      "profile_url": "https://{username}.myportfolio.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Cargo Collective",
+      "home_url": "https://cargo.site",
+      "profile_url": "https://{username}.cargo.site",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Format",
+      "home_url": "https://www.format.com",
+      "profile_url": "https://{username}.format.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "SmugMug",
+      "home_url": "https://www.smugmug.com",
+      "profile_url": "https://{username}.smugmug.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "PhotoShelter",
+      "home_url": "https://www.photoshelter.com",
+      "profile_url": "https://{username}.photoshelter.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "FolioHD",
+      "home_url": "https://www.foliohd.com",
+      "profile_url": "https://{username}.foliohd.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Coroflot",
+      "home_url": "https://www.coroflot.com",
+      "profile_url": "https://www.coroflot.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Carbonmade",
+      "home_url": "https://carbonmade.com",
+      "profile_url": "https://{username}.carbonmade.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Crevado",
+      "home_url": "https://crevado.com",
+      "profile_url": "https://{username}.crevado.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Krop",
+      "home_url": "https://www.krop.com",
+      "profile_url": "https://www.krop.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Working Not Working",
+      "home_url": "https://workingnotworking.com",
+      "profile_url": "https://workingnotworking.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "The Dots",
+      "home_url": "https://the-dots.com",
+      "profile_url": "https://the-dots.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Creative Market",
+      "home_url": "https://creativemarket.com",
+      "profile_url": "https://creativemarket.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Envato Elements author",
+      "home_url": "https://elements.envato.com",
+      "profile_url": "https://elements.envato.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "GraphicRiver",
+      "home_url": "https://graphicriver.net",
+      "profile_url": "https://graphicriver.net/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "ThemeForest",
+      "home_url": "https://themeforest.net",
+      "profile_url": "https://themeforest.net/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "CodeCanyon",
+      "home_url": "https://codecanyon.net",
+      "profile_url": "https://codecanyon.net/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "CGSociety",
+      "home_url": "https://cgsociety.org",
+      "profile_url": "https://cgsociety.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Polycount",
+      "home_url": "https://polycount.com",
+      "profile_url": "https://polycount.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Sketchfab",
+      "home_url": "https://sketchfab.com",
+      "profile_url": "https://sketchfab.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "sketchfab",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "Thingiverse",
+      "home_url": "https://www.thingiverse.com",
+      "profile_url": "https://www.thingiverse.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "MakerBot",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "Printables",
+      "home_url": "https://www.printables.com",
+      "profile_url": "https://www.printables.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Cults3D",
+      "home_url": "https://cults3d.com",
+      "profile_url": "https://cults3d.com/en/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "MyMiniFactory",
+      "home_url": "https://www.myminifactory.com",
+      "profile_url": "https://www.myminifactory.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Instructables",
+      "home_url": "https://www.instructables.com",
+      "profile_url": "https://www.instructables.com/member/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "randofo",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "Hackaday.io",
+      "home_url": "https://hackaday.io",
+      "profile_url": "https://hackaday.io/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Hackster.io",
+      "home_url": "https://www.hackster.io",
+      "profile_url": "https://www.hackster.io/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Tinkercad",
+      "home_url": "https://www.tinkercad.com",
+      "profile_url": "https://www.tinkercad.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "OpenProcessing",
+      "home_url": "https://openprocessing.org",
+      "profile_url": "https://openprocessing.org/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Shadertoy",
+      "home_url": "https://www.shadertoy.com",
+      "profile_url": "https://www.shadertoy.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "OpenGameArt",
+      "home_url": "https://opengameart.org",
+      "profile_url": "https://opengameart.org/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Aseprite Community",
+      "home_url": "https://community.aseprite.org",
+      "profile_url": "https://community.aseprite.org/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Newgrounds",
+      "home_url": "https://www.newgrounds.com",
+      "profile_url": "https://{username}.newgrounds.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Kongregate",
+      "home_url": "https://www.kongregate.com",
+      "profile_url": "https://www.kongregate.com/accounts/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Armor Games",
+      "home_url": "https://armorgames.com",
+      "profile_url": "https://armorgames.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Genius",
+      "home_url": "https://genius.com",
+      "profile_url": "https://genius.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Musixmatch",
+      "home_url": "https://www.musixmatch.com",
+      "profile_url": "https://www.musixmatch.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Songkick",
+      "home_url": "https://www.songkick.com",
+      "profile_url": "https://www.songkick.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Bandsintown",
+      "home_url": "https://www.bandsintown.com",
+      "profile_url": "https://www.bandsintown.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Resident Advisor",
+      "home_url": "https://ra.co",
+      "profile_url": "https://ra.co/dj/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Beatport",
+      "home_url": "https://www.beatport.com",
+      "profile_url": "https://www.beatport.com/artist/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Traxsource",
+      "home_url": "https://www.traxsource.com",
+      "profile_url": "https://www.traxsource.com/artist/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Audiomack",
+      "home_url": "https://audiomack.com",
+      "profile_url": "https://audiomack.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "ReverbNation",
+      "home_url": "https://www.reverbnation.com",
+      "profile_url": "https://www.reverbnation.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "PureVolume",
+      "home_url": "https://www.purevolume.com",
+      "profile_url": "https://www.purevolume.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Jamendo",
+      "home_url": "https://www.jamendo.com",
+      "profile_url": "https://www.jamendo.com/artist/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Hypem",
+      "home_url": "https://hypem.com",
+      "profile_url": "https://hypem.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "8tracks",
+      "home_url": "https://8tracks.com",
+      "profile_url": "https://8tracks.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "RadioPublic",
+      "home_url": "https://radiopublic.com",
+      "profile_url": "https://radiopublic.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Anchor.fm",
+      "home_url": "https://anchor.fm",
+      "profile_url": "https://anchor.fm/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Podbean",
+      "home_url": "https://www.podbean.com",
+      "profile_url": "https://www.podbean.com/user-{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Buzzsprout",
+      "home_url": "https://www.buzzsprout.com",
+      "profile_url": "https://www.buzzsprout.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Castbox",
+      "home_url": "https://castbox.fm",
+      "profile_url": "https://castbox.fm/channel/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Spreaker",
+      "home_url": "https://www.spreaker.com",
+      "profile_url": "https://www.spreaker.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Libsyn",
+      "home_url": "https://{username}.libsyn.com",
+      "profile_url": "https://{username}.libsyn.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "TuneIn",
+      "home_url": "https://tunein.com",
+      "profile_url": "https://tunein.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Soundtrap",
+      "home_url": "https://www.soundtrap.com",
+      "profile_url": "https://www.soundtrap.com/studio/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Splice",
+      "home_url": "https://splice.com",
+      "profile_url": "https://splice.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Looperman",
+      "home_url": "https://www.looperman.com",
+      "profile_url": "https://www.looperman.com/users/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Freesound",
+      "home_url": "https://freesound.org",
+      "profile_url": "https://freesound.org/people/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "Freesound",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "CCMixter",
+      "home_url": "https://ccmixter.org",
+      "profile_url": "https://ccmixter.org/people/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Xbox Gamertag",
+      "home_url": "https://www.xbox.com",
+      "profile_url": "https://www.xbox.com/play/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "PlayStation Network",
+      "home_url": "https://psnprofiles.com",
+      "profile_url": "https://psnprofiles.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "GOG",
+      "home_url": "https://www.gog.com",
+      "profile_url": "https://www.gog.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Humble Bundle",
+      "home_url": "https://www.humblebundle.com",
+      "profile_url": "https://www.humblebundle.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "SteamRep",
+      "home_url": "https://steamrep.com",
+      "profile_url": "https://steamrep.com/search?q={username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Faceit",
+      "home_url": "https://www.faceit.com",
+      "profile_url": "https://www.faceit.com/en/players/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "ESEA",
+      "home_url": "https://play.esea.net",
+      "profile_url": "https://play.esea.net/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Challengermode",
+      "home_url": "https://www.challengermode.com",
+      "profile_url": "https://www.challengermode.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "OP.GG",
+      "home_url": "https://www.op.gg",
+      "profile_url": "https://www.op.gg/summoners/na/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "U.GG",
+      "home_url": "https://u.gg",
+      "profile_url": "https://u.gg/lol/profile/na1/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Blitz.gg",
+      "home_url": "https://blitz.gg",
+      "profile_url": "https://blitz.gg/lol/profile/na1/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Porofessor",
+      "home_url": "https://porofessor.gg",
+      "profile_url": "https://porofessor.gg/live/na/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Dotabuff",
+      "home_url": "https://www.dotabuff.com",
+      "profile_url": "https://www.dotabuff.com/players/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "OpenDota",
+      "home_url": "https://www.opendota.com",
+      "profile_url": "https://www.opendota.com/players/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Overbuff",
+      "home_url": "https://www.overbuff.com",
+      "profile_url": "https://www.overbuff.com/players/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "R6Tracker",
+      "home_url": "https://r6.tracker.network",
+      "profile_url": "https://r6.tracker.network/profile/pc/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Fortnite Tracker",
+      "home_url": "https://fortnitetracker.com",
+      "profile_url": "https://fortnitetracker.com/profile/all/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Apex Tracker",
+      "home_url": "https://apex.tracker.gg",
+      "profile_url": "https://apex.tracker.gg/apex/profile/origin/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Rocket League Tracker",
+      "home_url": "https://rocketleague.tracker.network",
+      "profile_url": "https://rocketleague.tracker.network/profile/steam/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Hypixel",
+      "home_url": "https://hypixel.net",
+      "profile_url": "https://hypixel.net/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Minehut",
+      "home_url": "https://minehut.com",
+      "profile_url": "https://minehut.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Namemc",
+      "home_url": "https://namemc.com",
+      "profile_url": "https://namemc.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Planet Minecraft",
+      "home_url": "https://www.planetminecraft.com",
+      "profile_url": "https://www.planetminecraft.com/member/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Minecraft Forum",
+      "home_url": "https://www.minecraftforum.net",
+      "profile_url": "https://www.minecraftforum.net/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "BukkitDev",
+      "home_url": "https://dev.bukkit.org",
+      "profile_url": "https://dev.bukkit.org/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "SpigotMC",
+      "home_url": "https://www.spigotmc.org",
+      "profile_url": "https://www.spigotmc.org/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "PaperMC Forums",
+      "home_url": "https://forums.papermc.io",
+      "profile_url": "https://forums.papermc.io/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Roblox DevForum",
+      "home_url": "https://devforum.roblox.com",
+      "profile_url": "https://devforum.roblox.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Unity Discussions",
+      "home_url": "https://discussions.unity.com",
+      "profile_url": "https://discussions.unity.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Unreal Engine Forums",
+      "home_url": "https://forums.unrealengine.com",
+      "profile_url": "https://forums.unrealengine.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "GameBanana",
+      "home_url": "https://gamebanana.com",
+      "profile_url": "https://gamebanana.com/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "LoversLab",
+      "home_url": "https://www.loverslab.com",
+      "profile_url": "https://www.loverslab.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "nsfw": true,
+      "profile": "creative"
+    },
+    {
+      "name": "F95zone",
+      "home_url": "https://f95zone.to",
+      "profile_url": "https://f95zone.to/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "nsfw": true,
+      "profile": "creative"
+    },
+    {
+      "name": "OpenSea",
+      "home_url": "https://opensea.io",
+      "profile_url": "https://opensea.io/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "opensea",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "Rarible",
+      "home_url": "https://rarible.com",
+      "profile_url": "https://rarible.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Foundation",
+      "home_url": "https://foundation.app",
+      "profile_url": "https://foundation.app/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "SuperRare",
+      "home_url": "https://superrare.com",
+      "profile_url": "https://superrare.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "KnownOrigin",
+      "home_url": "https://knownorigin.io",
+      "profile_url": "https://knownorigin.io/gallery/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Async Art",
+      "home_url": "https://async.art",
+      "profile_url": "https://async.art/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Lens Protocol",
+      "home_url": "https://hey.xyz",
+      "profile_url": "https://hey.xyz/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Farcaster",
+      "home_url": "https://warpcast.com",
+      "profile_url": "https://warpcast.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Friend.tech",
+      "home_url": "https://www.friend.tech",
+      "profile_url": "https://www.friend.tech/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Link3",
+      "home_url": "https://link3.to",
+      "profile_url": "https://link3.to/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Lensfrens",
+      "home_url": "https://www.lensfrens.xyz",
+      "profile_url": "https://www.lensfrens.xyz/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Binance Square",
+      "home_url": "https://www.binance.com",
+      "profile_url": "https://www.binance.com/en/square/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "TradingView",
+      "home_url": "https://www.tradingview.com",
+      "profile_url": "https://www.tradingview.com/u/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Investing.com",
+      "home_url": "https://www.investing.com",
+      "profile_url": "https://www.investing.com/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Seeking Alpha",
+      "home_url": "https://seekingalpha.com",
+      "profile_url": "https://seekingalpha.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "StockTwits",
+      "home_url": "https://stocktwits.com",
+      "profile_url": "https://stocktwits.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "eToro",
+      "home_url": "https://www.etoro.com",
+      "profile_url": "https://www.etoro.com/people/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "GoFundMe",
+      "home_url": "https://www.gofundme.com",
+      "profile_url": "https://www.gofundme.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Kickstarter",
+      "home_url": "https://www.kickstarter.com",
+      "profile_url": "https://www.kickstarter.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Indiegogo",
+      "home_url": "https://www.indiegogo.com",
+      "profile_url": "https://www.indiegogo.com/individuals/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Crowdfunder",
+      "home_url": "https://www.crowdfunder.com",
+      "profile_url": "https://www.crowdfunder.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Fundly",
+      "home_url": "https://fundly.com",
+      "profile_url": "https://fundly.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Mightycause",
+      "home_url": "https://www.mightycause.com",
+      "profile_url": "https://www.mightycause.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Donorbox",
+      "home_url": "https://donorbox.org",
+      "profile_url": "https://donorbox.org/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Liberapay",
+      "home_url": "https://liberapay.com",
+      "profile_url": "https://liberapay.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "Liberapay",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "Open Collective",
+      "home_url": "https://opencollective.com",
+      "profile_url": "https://opencollective.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "opensource",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "GitHub Sponsors",
+      "home_url": "https://github.com",
+      "profile_url": "https://github.com/sponsors/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "yyx990803",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "creative"
+    },
+    {
+      "name": "Flattr",
+      "home_url": "https://flattr.com",
+      "profile_url": "https://flattr.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "TipMe",
+      "home_url": "https://tip.me",
+      "profile_url": "https://tip.me/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Streamlabs",
+      "home_url": "https://streamlabs.com",
+      "profile_url": "https://streamlabs.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Streamelements",
+      "home_url": "https://streamelements.com",
+      "profile_url": "https://streamelements.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Tiltify",
+      "home_url": "https://tiltify.com",
+      "profile_url": "https://tiltify.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Extra Life",
+      "home_url": "https://www.extra-life.org",
+      "profile_url": "https://www.extra-life.org/participants/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Fosstodon",
+      "home_url": "https://fosstodon.org",
+      "profile_url": "https://fosstodon.org/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://fosstodon.org/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Lemmy.world",
+      "home_url": "https://lemmy.world",
+      "profile_url": "https://lemmy.world/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Wykop",
+      "home_url": "https://wykop.pl",
+      "profile_url": "https://wykop.pl/ludzie/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "m__b",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "VK",
+      "home_url": "https://vk.com",
+      "profile_url": "https://vk.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Habr",
+      "home_url": "https://habr.com",
+      "profile_url": "https://habr.com/users/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "LiveJournal",
+      "home_url": "https://www.livejournal.com",
+      "profile_url": "https://{username}.livejournal.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Plurk",
+      "home_url": "https://www.plurk.com",
+      "profile_url": "https://www.plurk.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Vivino",
+      "home_url": "https://www.vivino.com",
+      "profile_url": "https://www.vivino.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Couchsurfing",
+      "home_url": "https://www.couchsurfing.com",
+      "profile_url": "https://www.couchsurfing.com/people/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "XDA Developers",
+      "home_url": "https://forum.xda-developers.com",
+      "profile_url": "https://forum.xda-developers.com/m/{username}.html",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Strava",
+      "home_url": "https://www.strava.com",
+      "profile_url": "https://www.strava.com/athletes/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "strava",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "MyFitnessPal",
+      "home_url": "https://www.myfitnesspal.com",
+      "profile_url": "https://www.myfitnesspal.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "BoardGameGeek",
+      "home_url": "https://boardgamegeek.com",
+      "profile_url": "https://boardgamegeek.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "RateYourMusic",
+      "home_url": "https://rateyourmusic.com",
+      "profile_url": "https://rateyourmusic.com/~{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Ultimate Guitar",
+      "home_url": "https://www.ultimate-guitar.com",
+      "profile_url": "https://www.ultimate-guitar.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "MuseScore",
+      "home_url": "https://musescore.com",
+      "profile_url": "https://musescore.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Quizlet",
+      "home_url": "https://quizlet.com",
+      "profile_url": "https://quizlet.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "X Twitter",
+      "home_url": "https://x.com",
+      "profile_url": "https://x.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404,
+          400
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Minds",
+      "home_url": "https://www.minds.com",
+      "profile_url": "https://www.minds.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Dreamwidth",
+      "home_url": "https://www.dreamwidth.org",
+      "profile_url": "https://{username}.dreamwidth.org",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Read the Docs",
+      "home_url": "https://readthedocs.org",
+      "profile_url": "https://readthedocs.org/profiles/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "ericholscher",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "LibraryThing",
+      "home_url": "https://www.librarything.com",
+      "profile_url": "https://www.librarything.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Wattpad",
+      "home_url": "https://www.wattpad.com",
+      "profile_url": "https://www.wattpad.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "username_claimed": "Wattpad",
+      "username_unclaimed": "zzsgopher9x8q7w6e5r4t3y",
+      "profile": "community"
+    },
+    {
+      "name": "AO3",
+      "home_url": "https://archiveofourown.org",
+      "profile_url": "https://archiveofourown.org/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "FanFiction.net",
+      "home_url": "https://www.fanfiction.net",
+      "profile_url": "https://www.fanfiction.net/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Quotev",
+      "home_url": "https://www.quotev.com",
+      "profile_url": "https://www.quotev.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.gamedev",
+      "home_url": "https://mastodon.gamedev.place",
+      "profile_url": "https://mastodon.gamedev.place/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.gamedev.place/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.art",
+      "home_url": "https://mastodon.art",
+      "profile_url": "https://mastodon.art/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.art/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Ruby.social",
+      "home_url": "https://ruby.social",
+      "profile_url": "https://ruby.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://ruby.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Phpc.social",
+      "home_url": "https://phpc.social",
+      "profile_url": "https://phpc.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://phpc.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Indieweb.social",
+      "home_url": "https://indieweb.social",
+      "profile_url": "https://indieweb.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://indieweb.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Chaos.social",
+      "home_url": "https://chaos.social",
+      "profile_url": "https://chaos.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://chaos.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Social.linux.pizza",
+      "home_url": "https://social.linux.pizza",
+      "profile_url": "https://social.linux.pizza/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://social.linux.pizza/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Odysee",
+      "home_url": "https://odysee.com",
+      "profile_url": "https://odysee.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Mastodon.online",
+      "home_url": "https://mastodon.online",
+      "profile_url": "https://mastodon.online/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.online/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mstdn.social",
+      "home_url": "https://mstdn.social",
+      "profile_url": "https://mstdn.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mstdn.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Hachyderm.io",
+      "home_url": "https://hachyderm.io",
+      "profile_url": "https://hachyderm.io/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://hachyderm.io/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Infosec.exchange",
+      "home_url": "https://infosec.exchange",
+      "profile_url": "https://infosec.exchange/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://infosec.exchange/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Techhub.social",
+      "home_url": "https://techhub.social",
+      "profile_url": "https://techhub.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://techhub.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mas.to",
+      "home_url": "https://mas.to",
+      "profile_url": "https://mas.to/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mas.to/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "C.im",
+      "home_url": "https://c.im",
+      "profile_url": "https://c.im/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://c.im/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Social.vivaldi.net",
+      "home_url": "https://social.vivaldi.net",
+      "profile_url": "https://social.vivaldi.net/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://social.vivaldi.net/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.world",
+      "home_url": "https://mastodon.world",
+      "profile_url": "https://mastodon.world/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.world/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.ie",
+      "home_url": "https://mastodon.ie",
+      "profile_url": "https://mastodon.ie/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.ie/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.scot",
+      "home_url": "https://mastodon.scot",
+      "profile_url": "https://mastodon.scot/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.scot/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.au",
+      "home_url": "https://mastodon.au",
+      "profile_url": "https://mastodon.au/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.au/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.nz",
+      "home_url": "https://mastodon.nz",
+      "profile_url": "https://mastodon.nz/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.nz/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mastodon.cloud",
+      "home_url": "https://mastodon.cloud",
+      "profile_url": "https://mastodon.cloud/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mastodon.cloud/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Universeodon",
+      "home_url": "https://universeodon.com",
+      "profile_url": "https://universeodon.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://universeodon.com/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Toot.community",
+      "home_url": "https://toot.community",
+      "profile_url": "https://toot.community/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://toot.community/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Toot.io",
+      "home_url": "https://toot.io",
+      "profile_url": "https://toot.io/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://toot.io/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Fediscience",
+      "home_url": "https://fediscience.org",
+      "profile_url": "https://fediscience.org/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://fediscience.org/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Mathstodon",
+      "home_url": "https://mathstodon.xyz",
+      "profile_url": "https://mathstodon.xyz/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://mathstodon.xyz/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Types.pl",
+      "home_url": "https://types.pl",
+      "profile_url": "https://types.pl/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://types.pl/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Functional.cafe",
+      "home_url": "https://functional.cafe",
+      "profile_url": "https://functional.cafe/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://functional.cafe/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Recursive.social",
+      "home_url": "https://recursive.social",
+      "profile_url": "https://recursive.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://recursive.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Dair-community",
+      "home_url": "https://dair-community.social",
+      "profile_url": "https://dair-community.social/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "probe_url": "https://dair-community.social/api/v1/accounts/lookup?acct={username}",
+      "profile": "community"
+    },
+    {
+      "name": "Lemmy.ml",
+      "home_url": "https://lemmy.ml",
+      "profile_url": "https://lemmy.ml/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Sh.itjust.works",
+      "home_url": "https://sh.itjust.works",
+      "profile_url": "https://sh.itjust.works/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Beehaw",
+      "home_url": "https://beehaw.org",
+      "profile_url": "https://beehaw.org/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Programming.dev",
+      "home_url": "https://programming.dev",
+      "profile_url": "https://programming.dev/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Lemmy.dbzer0",
+      "home_url": "https://lemmy.dbzer0.com",
+      "profile_url": "https://lemmy.dbzer0.com/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Sopuli",
+      "home_url": "https://sopuli.xyz",
+      "profile_url": "https://sopuli.xyz/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Discuss.tchncs.de",
+      "home_url": "https://discuss.tchncs.de",
+      "profile_url": "https://discuss.tchncs.de/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Feddit.de",
+      "home_url": "https://feddit.de",
+      "profile_url": "https://feddit.de/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Feddit.nl",
+      "home_url": "https://feddit.nl",
+      "profile_url": "https://feddit.nl/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Feddit.it",
+      "home_url": "https://feddit.it",
+      "profile_url": "https://feddit.it/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Lemmy.ca",
+      "home_url": "https://lemmy.ca",
+      "profile_url": "https://lemmy.ca/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Lemmy.zip",
+      "home_url": "https://lemmy.zip",
+      "profile_url": "https://lemmy.zip/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Slrpnk",
+      "home_url": "https://slrpnk.net",
+      "profile_url": "https://slrpnk.net/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Hexbear",
+      "home_url": "https://www.hexbear.net",
+      "profile_url": "https://www.hexbear.net/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Lemmygrad",
+      "home_url": "https://lemmygrad.ml",
+      "profile_url": "https://lemmygrad.ml/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Xing",
+      "home_url": "https://www.xing.com",
+      "profile_url": "https://www.xing.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Skyrock",
+      "home_url": "https://skyrock.com",
+      "profile_url": "https://{username}.skyrock.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Jeuxvideo",
+      "home_url": "https://www.jeuxvideo.com",
+      "profile_url": "https://www.jeuxvideo.com/profil/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Tweakers",
+      "home_url": "https://tweakers.net",
+      "profile_url": "https://tweakers.net/gallery/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Pikabu.ru",
+      "home_url": "https://pikabu.ru",
+      "profile_url": "https://pikabu.ru/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "DTF.ru",
+      "home_url": "https://dtf.ru",
+      "profile_url": "https://dtf.ru/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "VC.ru",
+      "home_url": "https://vc.ru",
+      "profile_url": "https://vc.ru/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Diary.ru",
+      "home_url": "https://www.diary.ru",
+      "profile_url": "https://{username}.diary.ru",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Yandex Dzen",
+      "home_url": "https://dzen.ru",
+      "profile_url": "https://dzen.ru/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Rutube Channel",
+      "home_url": "https://rutube.ru",
+      "profile_url": "https://rutube.ru/channel/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Naver Blog",
+      "home_url": "https://blog.naver.com",
+      "profile_url": "https://blog.naver.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Tistory",
+      "home_url": "https://www.tistory.com",
+      "profile_url": "https://{username}.tistory.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Ameblo",
+      "home_url": "https://ameblo.jp",
+      "profile_url": "https://ameblo.jp/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "FC2 Blog",
+      "home_url": "https://blog.fc2.com",
+      "profile_url": "https://{username}.blog.fc2.com",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Bahamut Gamer",
+      "home_url": "https://home.gamer.com.tw",
+      "profile_url": "https://home.gamer.com.tw/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Pixnet Blog",
+      "home_url": "https://www.pixnet.net",
+      "profile_url": "https://{username}.pixnet.net/blog",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Dcard.tw",
+      "home_url": "https://www.dcard.tw",
+      "profile_url": "https://www.dcard.tw/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Xiaohongshu",
+      "home_url": "https://www.xiaohongshu.com",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Bilibili",
+      "home_url": "https://space.bilibili.com",
+      "profile_url": "https://space.bilibili.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "AcFun User",
+      "home_url": "https://www.acfun.cn",
+      "profile_url": "https://www.acfun.cn/u/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "NetEase Cloud Music",
+      "home_url": "https://music.163.com",
+      "profile_url": "https://music.163.com/#/user/home?id={username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Taringa!",
+      "home_url": "https://www.taringa.net",
+      "profile_url": "https://www.taringa.net/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "TravelBlog.org",
+      "home_url": "https://www.travelblog.org",
+      "profile_url": "https://www.travelblog.org/Bloggers/{username}.html",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Travellerspoint",
+      "home_url": "https://www.travellerspoint.com",
+      "profile_url": "https://www.travellerspoint.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "TripAdvisor Profile",
+      "home_url": "https://www.tripadvisor.com",
+      "profile_url": "https://www.tripadvisor.com/Profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Meetup Members",
+      "home_url": "https://www.meetup.com",
+      "profile_url": "https://www.meetup.com/members/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "XDA",
+      "home_url": "https://xdaforums.com",
+      "profile_url": "https://xdaforums.com/m/{username}.html",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "ResetEra",
+      "home_url": "https://www.resetera.com",
+      "profile_url": "https://www.resetera.com/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "NeoGAF",
+      "home_url": "https://www.neogaf.com",
+      "profile_url": "https://www.neogaf.com/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "The Student Room",
+      "home_url": "https://www.thestudentroom.co.uk",
+      "profile_url": "https://www.thestudentroom.co.uk/members/{username}.html",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Mumsnet Talk",
+      "home_url": "https://www.mumsnet.com",
+      "profile_url": "https://www.mumsnet.com/Talk/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Royal Road Users",
+      "home_url": "https://www.royalroad.com",
+      "profile_url": "https://www.royalroad.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "ScribbleHub Users",
+      "home_url": "https://www.scribblehub.com",
+      "profile_url": "https://www.scribblehub.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Rumble Users",
+      "home_url": "https://rumble.com",
+      "profile_url": "https://rumble.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "BitChute Channels",
+      "home_url": "https://www.bitchute.com",
+      "profile_url": "https://www.bitchute.com/channel/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Kick Streamers",
+      "home_url": "https://kick.com",
+      "profile_url": "https://kick.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Trovo Live",
+      "home_url": "https://trovo.live",
+      "profile_url": "https://trovo.live/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "DLive Streamers",
+      "home_url": "https://dlive.tv",
+      "profile_url": "https://dlive.tv/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Picarto Artists",
+      "home_url": "https://picarto.tv",
+      "profile_url": "https://picarto.tv/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Gab Social",
+      "home_url": "https://gab.com",
+      "profile_url": "https://gab.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Gettr Users",
+      "home_url": "https://gettr.com",
+      "profile_url": "https://gettr.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Truth Social Users",
+      "home_url": "https://truthsocial.com",
+      "profile_url": "https://truthsocial.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "MeWe Users",
+      "home_url": "https://mewe.com",
+      "profile_url": "https://mewe.com/i/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Ello Creators",
+      "home_url": "https://ello.co",
+      "profile_url": "https://ello.co/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Vero App",
+      "home_url": "https://vero.co",
+      "profile_url": "https://vero.co/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "MySpace Users",
+      "home_url": "https://myspace.com",
+      "profile_url": "https://myspace.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "OkCupid Profiles",
+      "home_url": "https://www.okcupid.com",
+      "profile_url": "https://www.okcupid.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Badoo Profiles",
+      "home_url": "https://badoo.com",
+      "profile_url": "https://badoo.com/profile/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Tagged Users",
+      "home_url": "https://www.tagged.com",
+      "profile_url": "https://www.tagged.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Hi5 Users",
+      "home_url": "https://hi5.com",
+      "profile_url": "https://hi5.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Clubhouse Users",
+      "home_url": "https://www.clubhouse.com",
+      "profile_url": "https://www.clubhouse.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "BeReal Users",
+      "home_url": "https://bere.al",
+      "profile_url": "https://bere.al/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Letterboxd Lists",
+      "home_url": "https://letterboxd.com",
+      "profile_url": "https://letterboxd.com/{username}/lists/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Goodreads Authors",
+      "home_url": "https://www.goodreads.com",
+      "profile_url": "https://www.goodreads.com/author/show/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "IMDb User",
+      "home_url": "https://www.imdb.com",
+      "profile_url": "https://www.imdb.com/user/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Untappd",
+      "home_url": "https://untappd.com",
+      "profile_url": "https://untappd.com/user/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "RateBeer",
+      "home_url": "https://www.ratebeer.com",
+      "profile_url": "https://www.ratebeer.com/user/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "BeerAdvocate",
+      "home_url": "https://www.beeradvocate.com",
+      "profile_url": "https://www.beeradvocate.com/community/members/{username}/",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Discogs Wantlist",
+      "home_url": "https://www.discogs.com",
+      "profile_url": "https://www.discogs.com/wantlist?user={username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Last.fm Library",
+      "home_url": "https://www.last.fm",
+      "profile_url": "https://www.last.fm/user/{username}/library",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Bandsintown Fans",
+      "home_url": "https://www.bandsintown.com",
+      "profile_url": "https://www.bandsintown.com/f/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Xbox Gamertags",
+      "home_url": "https://www.xboxgamertag.com",
+      "profile_url": "https://www.xboxgamertag.com/search/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "ApexTracker",
+      "home_url": "https://apex.tracker.gg",
+      "profile_url": "https://apex.tracker.gg/apex/profile/origin/{username}/overview",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Speedrun.com Users",
+      "home_url": "https://www.speedrun.com",
+      "profile_url": "https://www.speedrun.com/users/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "creative"
+    },
+    {
+      "name": "Bio.link",
+      "home_url": "https://bio.link",
+      "profile_url": "https://bio.link/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Linkin.bio",
+      "home_url": "https://linkin.bio",
+      "profile_url": "https://linkin.bio/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Solo.to",
+      "home_url": "https://solo.to",
+      "profile_url": "https://solo.to/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Lnk.bio",
+      "home_url": "https://lnk.bio",
+      "profile_url": "https://lnk.bio/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Beacons.ai",
+      "home_url": "https://beacons.ai",
+      "profile_url": "https://beacons.ai/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Withkoji",
+      "home_url": "https://withkoji.com",
+      "profile_url": "https://withkoji.com/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Tap.bio",
+      "home_url": "https://tap.bio",
+      "profile_url": "https://tap.bio/@{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Campsite.bio",
+      "home_url": "https://campsite.bio",
+      "profile_url": "https://campsite.bio/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "AllMyLinks",
+      "home_url": "https://allmylinks.com",
+      "profile_url": "https://allmylinks.com/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Direct.me",
+      "home_url": "https://direct.me",
+      "profile_url": "https://direct.me/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Hoo.be",
+      "home_url": "https://hoo.be",
+      "profile_url": "https://hoo.be/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    },
+    {
+      "name": "Milkshake.app",
+      "home_url": "https://msha.ke",
+      "profile_url": "https://msha.ke/{username}",
+      "check": {
+        "type": "status",
+        "not_found_status": [
+          404
+        ]
+      },
+      "profile": "community"
+    }
+  ]
+}

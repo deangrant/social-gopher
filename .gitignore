@@ -1,0 +1,32 @@
+# Binaries / build output
+/social-gopher
+*.exe
+*.test
+*.out
+/bin/
+/dist/
+/build/
+vendor/
+
+# Tests / coverage / profiles
+coverage.out
+coverage.html
+*.coverprofile
+cpu.prof
+mem.prof
+*.pprof
+
+# Scan exports (-csv)
+*.csv
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*~
+
+# Env / secrets
+.env
+.env.*
+!.env.example
