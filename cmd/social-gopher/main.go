@@ -4,6 +4,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -185,11 +186,8 @@ func run(args []string) int {
 			found++
 		}
 	}
-	if err := ctx.Err(); err != nil && err != context.Canceled {
-		fmt.Fprintf(os.Stderr, "scan interrupted: %v\n", err)
-	}
-
-	printer.Summary(found, len(filtered), time.Since(start))
+	checked := len(results)
+	printer.Summary(found, checked, time.Since(start))
 
 	if *csvOut {
 		path := username + ".csv"
@@ -198,6 +196,17 @@ func run(args []string) int {
 			return 1
 		}
 		fmt.Fprintf(os.Stdout, "Wrote %s\n", path)
+	}
+
+	if err := ctx.Err(); err != nil {
+		fmt.Fprintf(
+			os.Stderr,
+			"scan interrupted after %d/%d sites: %v\n",
+			checked,
+			len(filtered),
+			err,
+		)
+		return exitOnInterrupt(err)
 	}
 	return 0
 }
@@ -282,10 +291,26 @@ func runValidate(
 		failed,
 		skipped,
 	)
+	if err := ctx.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "validate interrupted: %v\n", err)
+		return exitOnInterrupt(err)
+	}
 	if failed > 0 {
 		return 1
 	}
 	return 0
+}
+
+// exitOnInterrupt maps a context error after an incomplete run to a process
+// exit code. Canceled (Ctrl+C / SIGTERM via NotifyContext) uses 130.
+func exitOnInterrupt(err error) int {
+	if err == nil {
+		return 0
+	}
+	if errors.Is(err, context.Canceled) {
+		return 130
+	}
+	return 1
 }
 
 func writeCSV(path, username string, results []scan.Result) error {
