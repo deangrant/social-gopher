@@ -45,6 +45,9 @@ type Result struct {
 type Options struct {
 	Client  Doer
 	Workers int
+	// Timeout is the per-site probe budget shared by HEAD and any GET retry.
+	// If unset or non-positive, defaults to 20s.
+	Timeout time.Duration
 	// OnStart is called when a site probe begins. Optional.
 	OnStart func(site catalog.Site)
 }
@@ -53,6 +56,7 @@ type Options struct {
 type Scanner struct {
 	client  Doer
 	workers int
+	timeout time.Duration
 	onStart func(site catalog.Site)
 }
 
@@ -65,9 +69,14 @@ func New(opts Options) (*Scanner, error) {
 	if workers <= 0 {
 		workers = 20
 	}
+	timeout := opts.Timeout
+	if timeout <= 0 {
+		timeout = 20 * time.Second
+	}
 	return &Scanner{
 		client:  opts.Client,
 		workers: workers,
+		timeout: timeout,
 		onStart: opts.OnStart,
 	}, nil
 }
@@ -174,7 +183,10 @@ func (s *Scanner) Check(
 		}
 	}
 
-	req, err := http.NewRequestWithContext(ctx, method, probeURL, nil)
+	probeCtx, cancel := context.WithTimeout(ctx, s.timeout)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(probeCtx, method, probeURL, nil)
 	if err != nil {
 		res.Exists = ErrorState
 		res.Err = err
@@ -188,14 +200,13 @@ func (s *Scanner) Check(
 
 	start := time.Now()
 	resp, err := client.Do(req)
-	res.ResponseTime = time.Since(start)
 	if err != nil {
 		// HEAD is often blocked; retry GET for status checks.
 		if method == http.MethodHead &&
 			site.Check.Type == catalog.CheckStatus &&
-			ctx.Err() == nil {
+			probeCtx.Err() == nil {
 			req, reqErr := http.NewRequestWithContext(
-				ctx,
+				probeCtx,
 				http.MethodGet,
 				probeURL,
 				nil,
@@ -204,12 +215,11 @@ func (s *Scanner) Check(
 				for k, v := range site.Headers {
 					req.Header.Set(k, v)
 				}
-				start = time.Now()
 				resp, err = client.Do(req)
-				res.ResponseTime = time.Since(start)
 			}
 		}
 	}
+	res.ResponseTime = time.Since(start)
 	if err != nil {
 		res.Exists = ErrorState
 		res.Err = err

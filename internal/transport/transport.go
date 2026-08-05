@@ -40,10 +40,14 @@ func New(opts Options) (Result, error) {
 	}
 
 	proxyURL, notice := resolveProxy(opts)
+	dialTimeout := opts.Timeout
+	if dialTimeout > 10*time.Second {
+		dialTimeout = 10 * time.Second
+	}
 	transport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
-			Timeout:   opts.Timeout,
+			Timeout:   dialTimeout,
 			KeepAlive: 30 * time.Second,
 		}).DialContext,
 		ForceAttemptHTTP2:     true,

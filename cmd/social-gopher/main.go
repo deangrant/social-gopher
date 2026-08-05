@@ -168,6 +168,7 @@ func run(args []string) int {
 	scanner, err := scan.New(scan.Options{
 		Client:  tr.Client,
 		Workers: *workers,
+		Timeout: *timeout,
 		OnStart: func(site catalog.Site) {
 			printer.Started(site.Name)
 		},
@@ -222,7 +223,11 @@ func runValidate(
 	sites []catalog.Site,
 	timeout time.Duration,
 ) int {
-	scanner, err := scan.New(scan.Options{Client: client, Workers: 1})
+	scanner, err := scan.New(scan.Options{
+		Client:  client,
+		Workers: 1,
+		Timeout: timeout,
+	})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "scanner: %v\n", err)
 		return 1

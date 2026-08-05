@@ -2,9 +2,12 @@ package scan_test
 
 import (
 	"context"
+	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -437,5 +440,128 @@ func TestOnStart(t *testing.T) {
 		}
 	default:
 		t.Fatal("OnStart was not called")
+	}
+}
+
+type seqDoer struct {
+	mu    sync.Mutex
+	calls []string
+	fn    func(req *http.Request, n int) (*http.Response, error)
+}
+
+func (d *seqDoer) Do(req *http.Request) (*http.Response, error) {
+	d.mu.Lock()
+	n := len(d.calls)
+	d.calls = append(d.calls, req.Method)
+	fn := d.fn
+	d.mu.Unlock()
+	return fn(req, n)
+}
+
+func (d *seqDoer) methods() []string {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	out := make([]string, len(d.calls))
+	copy(out, d.calls)
+	return out
+}
+
+func TestSharedProbeTimeoutSkipsGETRetry(t *testing.T) {
+	d := &seqDoer{
+		fn: func(req *http.Request, _ int) (*http.Response, error) {
+			if req.Method != http.MethodHead {
+				t.Errorf("unexpected method %s", req.Method)
+				return nil, errors.New("unexpected GET")
+			}
+			<-req.Context().Done()
+			return nil, req.Context().Err()
+		},
+	}
+	site := catalog.Site{
+		Name:       "SlowHEAD",
+		HomeURL:    "https://example.com",
+		ProfileURL: "https://example.com/{username}",
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
+	}
+	timeout := 50 * time.Millisecond
+	sc, err := scan.New(scan.Options{
+		Client:  d,
+		Workers: 1,
+		Timeout: timeout,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	start := time.Now()
+	res := sc.Check(context.Background(), "alice", site)
+	elapsed := time.Since(start)
+
+	if res.Exists != scan.ErrorState {
+		t.Fatalf("exists = %v, want error", res.Exists)
+	}
+	methods := d.methods()
+	if len(methods) != 1 || methods[0] != http.MethodHead {
+		t.Fatalf("methods = %v, want [HEAD] only", methods)
+	}
+	if elapsed > 3*timeout {
+		t.Fatalf(
+			"elapsed %v exceeds ~1x timeout %v (got ~2x?)",
+			elapsed,
+			timeout,
+		)
+	}
+	if res.ResponseTime > 3*timeout {
+		t.Fatalf(
+			"ResponseTime %v exceeds ~1x timeout %v",
+			res.ResponseTime,
+			timeout,
+		)
+	}
+}
+
+func TestFastHEADFailureStillRetriesGET(t *testing.T) {
+	d := &seqDoer{
+		fn: func(req *http.Request, _ int) (*http.Response, error) {
+			if req.Method == http.MethodHead {
+				return nil, errors.New("head blocked")
+			}
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader("ok")),
+				Header:     make(http.Header),
+			}, nil
+		},
+	}
+	site := catalog.Site{
+		Name:       "RetryGET",
+		HomeURL:    "https://example.com",
+		ProfileURL: "https://example.com/{username}",
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
+	}
+	sc, err := scan.New(scan.Options{
+		Client:  d,
+		Workers: 1,
+		Timeout: time.Second,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	res := sc.Check(context.Background(), "alice", site)
+	if res.Exists != scan.Found {
+		t.Fatalf("exists = %v, want found (err=%v)", res.Exists, res.Err)
+	}
+	methods := d.methods()
+	if len(methods) != 2 ||
+		methods[0] != http.MethodHead ||
+		methods[1] != http.MethodGet {
+		t.Fatalf("methods = %v, want [HEAD GET]", methods)
 	}
 }
