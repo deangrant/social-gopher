@@ -38,7 +38,9 @@ type Result struct {
 // Options configures a Scanner.
 type Options struct {
 	// Client is used for probes. Redirects are disabled via CheckRedirect.
-	Client  *http.Client
+	Client *http.Client
+	// Workers is the concurrency limit. Zero means default 20; the CLI
+	// rejects non-positive -workers values before calling New.
 	Workers int
 	// Timeout is the per-site probe budget shared by HEAD and any GET retry.
 	// If unset or non-positive, defaults to 20s.

@@ -54,7 +54,7 @@ social-gopher -proxy socks5h://127.0.0.1:9050 alice
 | `-tor` | off | Use Tor (reuse existing SOCKS or start system `tor`) |
 | `-proxy` | | Proxy URL (`socks5h://`, `socks5://`, `http://`, `https://`); SOCKS schemes resolve DNS through the proxy |
 | `-timeout` | `20s` | Per-site probe budget (shared by HEAD and any GET retry) |
-| `-workers` | `20` | Concurrent workers |
+| `-workers` | `20` | Concurrent workers (must be ≥ 1) |
 | `-profile` | `default` | Repeatable scan profile: `default`, `developer`, `creative`, `community`, or `full` |
 | `-site` | all | Repeatable site name filter |
 | `-nsfw` | off | Include NSFW-tagged sites |

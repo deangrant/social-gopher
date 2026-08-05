@@ -53,7 +53,11 @@ func run(args []string) int {
 			20*time.Second,
 			"per-request timeout",
 		)
-		workers  = fs.Int("workers", 20, "number of concurrent workers")
+		workers = fs.Int(
+			"workers",
+			20,
+			"number of concurrent workers (must be >= 1)",
+		)
 		nsfw     = fs.Bool("nsfw", false, "include NSFW-tagged sites")
 		verbose  = fs.Bool("v", false, "print non-hits and errors")
 		catalogP = fs.String(
@@ -79,6 +83,10 @@ func run(args []string) int {
 	fs.BoolVar(verbose, "verbose", false, "print non-hits and errors")
 
 	if err := fs.Parse(args); err != nil {
+		return 2
+	}
+	if *workers <= 0 {
+		fmt.Fprintln(os.Stderr, "workers must be >= 1")
 		return 2
 	}
 

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
 )
 
@@ -73,6 +74,20 @@ func TestCSVOutputPath(t *testing.T) {
 					got,
 					tt.want,
 				)
+			}
+		})
+	}
+}
+
+func TestRunRejectsNonPositiveWorkers(t *testing.T) {
+	for _, args := range [][]string{
+		{"-workers", "0", "alice"},
+		{"-workers", "-1", "alice"},
+		{"-workers", "0", "-validate-catalog"},
+	} {
+		t.Run(strings.Join(args, " "), func(t *testing.T) {
+			if code := run(args); code != 2 {
+				t.Fatalf("run(%v) = %d, want 2", args, code)
 			}
 		})
 	}
