@@ -3,6 +3,10 @@
 Structured conventions for AI agents and humans working in this repository. For
 fuller context, see [README.md](README.md).
 
+## Docs
+
+- [`.agents/docs/ARCHITECTURE.md`](.agents/docs/ARCHITECTURE.md) — high-level system architecture and diagrams
+
 ## Rules
 
 - [`.agents/rules/`](.agents/rules/) (symlinked from [`.cursor/rules`](.cursor/rules))
