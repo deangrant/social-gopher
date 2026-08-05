@@ -338,6 +338,14 @@ func TestFilter(t *testing.T) {
 	if _, err := catalog.Filter(sites, []string{"nope"}, false); err == nil {
 		t.Fatal("unknown site: want error")
 	}
+
+	nsfwOnly := []catalog.Site{
+		{Name: "Adult", NSFW: true},
+		{Name: "Adult2", NSFW: true},
+	}
+	if _, err := catalog.Filter(nsfwOnly, nil, false); err == nil {
+		t.Fatal("all NSFW excluded: want error")
+	}
 }
 
 func TestFilterByProfile(t *testing.T) {

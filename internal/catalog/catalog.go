@@ -183,6 +183,7 @@ func FilterByProfile(sites []Site, profiles []string) ([]Site, error) {
 // If names is non-empty, only sites whose names match
 // (case-insensitive) are kept.
 // NSFW sites are omitted unless includeNSFW is true.
+// An empty effective site set is always an error.
 func Filter(sites []Site, names []string, includeNSFW bool) ([]Site, error) {
 	want := make(map[string]struct{}, len(names))
 	for _, n := range names {
@@ -201,7 +202,7 @@ func Filter(sites []Site, names []string, includeNSFW bool) ([]Site, error) {
 		}
 		out = append(out, s)
 	}
-	if len(want) > 0 && len(out) == 0 {
+	if len(out) == 0 {
 		return nil, fmt.Errorf("no sites matched filters")
 	}
 	if len(want) > 0 {
