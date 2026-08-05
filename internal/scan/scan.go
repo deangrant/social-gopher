@@ -224,15 +224,24 @@ func (s *Scanner) Check(
 	defer resp.Body.Close()
 	res.HTTPStatus = resp.StatusCode
 
-	body, readErr := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
-	if readErr != nil && site.Check.Type == catalog.CheckBody {
-		res.Exists = ErrorState
-		res.Err = readErr
-		return res
+	var body string
+	if needsBody(site) {
+		raw, readErr := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+		if readErr != nil && site.Check.Type == catalog.CheckBody {
+			res.Exists = ErrorState
+			res.Err = readErr
+			return res
+		}
+		body = string(raw)
 	}
 
-	res.Exists = classify(site, resp.StatusCode, string(body))
+	res.Exists = classify(site, resp.StatusCode, body)
 	return res
+}
+
+func needsBody(site catalog.Site) bool {
+	return site.Check.Type == catalog.CheckBody ||
+		len(site.Check.NotFoundText) > 0
 }
 
 func classify(site catalog.Site, status int, body string) Existence {

@@ -614,3 +614,104 @@ func TestNoRedirectOverridesFollowingClient(t *testing.T) {
 		t.Fatalf("status = %d, want 302", got.HTTPStatus)
 	}
 }
+
+type countingReadCloser struct {
+	r io.ReadCloser
+	n *int
+}
+
+func (c *countingReadCloser) Read(p []byte) (int, error) {
+	nr, err := c.r.Read(p)
+	*c.n += nr
+	return nr, err
+}
+
+func (c *countingReadCloser) Close() error {
+	return c.r.Close()
+}
+
+func TestStatusCheckSkipsBodyRead(t *testing.T) {
+	var readBytes int
+	payload := strings.Repeat("x", 1<<20)
+	tr := &seqTransport{
+		fn: func(req *http.Request, _ int) (*http.Response, error) {
+			body := &countingReadCloser{
+				r: io.NopCloser(strings.NewReader(payload)),
+				n: &readBytes,
+			}
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       body,
+				Header:     make(http.Header),
+				Request:    req,
+			}, nil
+		},
+	}
+	site := catalog.Site{
+		Name:       "StatusOnly",
+		HomeURL:    "https://example.com",
+		ProfileURL: "https://example.com/{username}",
+		Method:     http.MethodGet,
+		Check: catalog.Check{
+			Type:           catalog.CheckStatus,
+			NotFoundStatus: []int{404},
+		},
+	}
+	sc, err := scan.New(scan.Options{
+		Client:  &http.Client{Transport: tr},
+		Workers: 1,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	got := sc.Check(context.Background(), "alice", site)
+	if got.Exists != scan.Found {
+		t.Fatalf("exists = %v, want found", got.Exists)
+	}
+	if readBytes != 0 {
+		t.Fatalf("body bytes read = %d, want 0", readBytes)
+	}
+}
+
+func TestBodyCheckStillReadsBody(t *testing.T) {
+	var readBytes int
+	tr := &seqTransport{
+		fn: func(req *http.Request, _ int) (*http.Response, error) {
+			body := &countingReadCloser{
+				r: io.NopCloser(strings.NewReader("user does not exist")),
+				n: &readBytes,
+			}
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       body,
+				Header:     make(http.Header),
+				Request:    req,
+			}, nil
+		},
+	}
+	site := catalog.Site{
+		Name:       "BodyNeeded",
+		HomeURL:    "https://example.com",
+		ProfileURL: "https://example.com/{username}",
+		Check: catalog.Check{
+			Type:         catalog.CheckBody,
+			NotFoundText: []string{"does not exist"},
+		},
+	}
+	sc, err := scan.New(scan.Options{
+		Client:  &http.Client{Transport: tr},
+		Workers: 1,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	got := sc.Check(context.Background(), "alice", site)
+	if got.Exists != scan.NotFound {
+		t.Fatalf("exists = %v, want not_found", got.Exists)
+	}
+	if readBytes == 0 {
+		t.Fatal("body bytes read = 0, want > 0 for body check")
+	}
+}
