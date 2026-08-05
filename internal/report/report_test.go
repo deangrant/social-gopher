@@ -204,7 +204,7 @@ func TestPrinterVerboseNotFound(t *testing.T) {
 	}
 }
 
-func TestPrinterConcurrentStartedResult(t *testing.T) {
+func TestPrinterConcurrentStartedResult(_ *testing.T) {
 	p := &report.Printer{Out: io.Discard, Color: true}
 	var wg sync.WaitGroup
 	const n = 50

@@ -1,6 +1,7 @@
 package transport_test
 
 import (
+	"context"
 	"io"
 	"net"
 	"net/http"
@@ -116,7 +117,11 @@ func TestSocks5hSendsHostname(t *testing.T) {
 		atyp byte
 		host string
 	)
-	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	ln, err := (&net.ListenConfig{}).Listen(
+		context.Background(),
+		"tcp",
+		"127.0.0.1:0",
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -186,7 +191,8 @@ func TestSocks5hSendsHostname(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	req, err := http.NewRequest(
+	req, err := http.NewRequestWithContext(
+		context.Background(),
 		http.MethodGet,
 		"http://probe.example/{username}",
 		nil,
@@ -194,7 +200,10 @@ func TestSocks5hSendsHostname(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, _ = res.Client.Do(req)
+	resp, _ := res.Client.Do(req)
+	if resp != nil {
+		_ = resp.Body.Close()
+	}
 	<-done
 
 	mu.Lock()

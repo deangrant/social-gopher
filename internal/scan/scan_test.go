@@ -917,14 +917,16 @@ func TestClassifyMatrix(t *testing.T) {
 			var tr http.RoundTripper
 			if tt.redirectTo != "" {
 				srv := httptest.NewServer(
-					http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-						if r.URL.Path == tt.redirectTo {
-							followed = true
-							w.WriteHeader(http.StatusOK)
-							return
-						}
-						http.Redirect(w, r, tt.redirectTo, http.StatusFound)
-					}),
+					http.HandlerFunc(
+						func(w http.ResponseWriter, r *http.Request) {
+							if r.URL.Path == tt.redirectTo {
+								followed = true
+								w.WriteHeader(http.StatusOK)
+								return
+							}
+							http.Redirect(w, r, tt.redirectTo, http.StatusFound)
+						},
+					),
 				)
 				t.Cleanup(srv.Close)
 				tr = srv.Client().Transport
@@ -961,9 +963,7 @@ func TestClassifyMatrix(t *testing.T) {
 
 			tr = &seqTransport{
 				fn: func(req *http.Request, _ int) (*http.Response, error) {
-					var body io.ReadCloser = io.NopCloser(
-						strings.NewReader(tt.body),
-					)
+					body := io.NopCloser(strings.NewReader(tt.body))
 					if tt.bodyErr != nil {
 						body = io.NopCloser(&errReadCloser{err: tt.bodyErr})
 					}
@@ -1103,7 +1103,8 @@ func TestStatusCheckSkipsMultiMiBBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for range sc.Run(context.Background(), "alice", sites) {
+	for r := range sc.Run(context.Background(), "alice", sites) {
+		_ = r
 	}
 	if readBytes != 0 {
 		t.Fatalf("body bytes read = %d, want 0 across catalog", readBytes)

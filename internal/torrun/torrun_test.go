@@ -171,7 +171,14 @@ func writeTorStub(t *testing.T, src string) string {
 		t.Fatal(err)
 	}
 	bin := filepath.Join(dir, "tor-stub")
-	cmd := exec.Command("go", "build", "-o", bin, srcPath)
+	cmd := exec.CommandContext(
+		context.Background(),
+		"go",
+		"build",
+		"-o",
+		bin,
+		srcPath,
+	)
 	cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
@@ -181,7 +188,11 @@ func writeTorStub(t *testing.T, src string) string {
 }
 
 func TestEnsureStartupTimeout(t *testing.T) {
-	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	ln, err := (&net.ListenConfig{}).Listen(
+		context.Background(),
+		"tcp",
+		"127.0.0.1:0",
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -210,7 +221,11 @@ func main() { time.Sleep(30 * time.Second) }
 }
 
 func TestEnsureCloseKillsStub(t *testing.T) {
-	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	ln, err := (&net.ListenConfig{}).Listen(
+		context.Background(),
+		"tcp",
+		"127.0.0.1:0",
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
